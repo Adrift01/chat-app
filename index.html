@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChatWithStranger</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #222;
+      color: white;
+      margin: 0;
+      display: flex;
+    }
+    #chat {
+      flex: 3;
+      padding: 20px;
+    }
+    #users {
+      flex: 1;
+      background: #111;
+      padding: 20px;
+      border-left: 2px solid #444;
+    }
+    #messages {
+      height: 300px;
+      overflow-y: scroll;
+      background: #333;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    input, button {
+      padding: 10px;
+      width: 80%;
+      border-radius: 5px;
+      border: none;
+    }
+    .user {
+      margin-bottom: 10px;
+      cursor: pointer;
+      padding: 5px;
+      background: #444;
+      border-radius: 5px;
+    }
+    .user:hover {
+      background: #555;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat">
+    <h2>Talk with Strangers 💬</h2>
+    <div id="messages"></div>
+    <input id="msg" placeholder="Type your message..." />
+    <button onclick="send()">Send</button>
+  </div>
+
+  <div id="users">
+    <h3>Online Users</h3>
+    <div id="userList"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const messages = document.getElementById('messages');
+    const userList = document.getElementById('userList');
+    let currentTarget = null;
+
+    socket.on('message', ({ from, text }) => {
+      const div = document.createElement('div');
+      div.textContent = `${from}: ${text}`;
+      messages.appendChild(div);
+    });
+
+    socket.on('userList', users => {
+      userList.innerHTML = '';
+      users.forEach(id => {
+        if (id === socket.id) return; // skip self
+        const userDiv = document.createElement('div');
+        userDiv.textContent = id;
+        userDiv.classList.add('user');
+        userDiv.onclick = () => {
+          currentTarget = id;
+          alert("Now chatting with: " + id);
+        };
+        userList.appendChild(userDiv);
+      });
+    });
+
+    function send() {
+      const input = document.getElementById('msg');
+      if (currentTarget) {
+        socket.emit('privateMessage', {
+          to: currentTarget,
+          text: input.value
+        });
+        const div = document.createElement('div');
+        div.textContent = `You: ${input.value}`;
+        messages.appendChild(div);
+      } else {
+        alert("Select a user first!");
+      }
+      input.value = '';
+    }
+  </script>
+</body>
+</html>
