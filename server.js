@@ -1,37 +1,57 @@
 const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const server = http.createServer(app);
+const io = socketIo(server);
+
 const path = require('path');
+const users = {}; // Store user info with socket.id
 
-app.use(express.static(path.join(__dirname, '/')));
+app.use(express.static(path.join(__dirname, 'public'))); // Serve frontend
 
-let onlineUsers = {};
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
 
-io.on('connection', socket => {
-  socket.on('join', data => {
-    onlineUsers[socket.id] = { id: socket.id, user: data.user, pic: data.pic };
-    io.emit('onlineUsers', Object.values(onlineUsers));
+  // When a user joins
+  socket.on('join', (data) => {
+    users[socket.id] = { id: socket.id, user: data.user, pic: data.pic };
+    io.emit('onlineUsers', Object.values(users));
   });
 
-  socket.on('message', msg => {
-    io.emit('message', msg);
+  // Public message
+  socket.on('message', (msg) => {
+    const timestamp = new Date().toLocaleString();
+    io.emit('message', { ...msg, timestamp });
   });
 
-  socket.on('privateMessage', data => {
-    io.to(data.to).emit('privateMessage', {
-      user: data.user,
-      text: data.text
+  // Private message
+  socket.on('privateMessage', (msg) => {
+    const timestamp = new Date().toLocaleString();
+    io.to(msg.to).emit('privateMessage', {
+      user: msg.user,
+      text: msg.text,
+      timestamp
+    });
+
+    // Also show it to the sender
+    socket.emit('privateMessage', {
+      user: msg.user + ' (You)',
+      text: msg.text,
+      timestamp
     });
   });
 
+  // Disconnect
   socket.on('disconnect', () => {
-    delete onlineUsers[socket.id];
-    io.emit('onlineUsers', Object.values(onlineUsers));
+    delete users[socket.id];
+    io.emit('onlineUsers', Object.values(users));
+    console.log('A user disconnected:', socket.id);
   });
 });
 
+// Start server
 const PORT = process.env.PORT || 3000;
-http.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
