@@ -25,10 +25,10 @@
     #login {
       margin-top: 20px;
     }
-    #chat {
+    #chat, #privateChat {
       display: none;
     }
-    #messages {
+    #messages, #privateMessages {
       height: 300px;
       overflow-y: scroll;
       background: #333;
@@ -63,112 +63,140 @@
 </head>
 <body>
 
-  <div id="container">
-    <h2>Talk with Strangers 💬</h2>
-    
-    <div id="login">
-      <input type="text" id="username" placeholder="Enter your name" /><br>
-      <input type="file" id="picInput" accept="image/*" /><br>
-      <img id="preview" src="#" style="display: none;" /><br>
-      <button onclick="startChat()">Start Chat</button>
-    </div>
-    
-    <div id="chat">
-      <div id="messages"></div>
-      <input id="msg" placeholder="Type your message..." />
-      <button onclick="send()">Send</button>
-    </div>
+<div id="container">
+  <h2>Talk with Strangers 💬</h2>
+
+  <div id="login">
+    <input type="text" id="username" placeholder="Enter your name" /><br>
+    <input type="file" id="picInput" accept="image/*" /><br>
+    <img id="preview" src="#" style="display: none;" /><br>
+    <button onclick="startChat()">Start Chat</button>
   </div>
 
-  <div id="sidebar">
-    <h3>Online Users</h3>
-    <div id="userList"></div>
+  <div id="chat">
+    <h3>Public Chat</h3>
+    <div id="messages"></div>
+    <input id="msg" placeholder="Type your message..." />
+    <button onclick="send()">Send</button>
   </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io();
-    let username = '';
-    let profilePic = '';
+  <div id="privateChat">
+    <h3 id="privateTitle"></h3>
+    <div id="privateMessages"></div>
+    <input id="privateMsg" placeholder="Type private message..." />
+    <button onclick="sendPrivate()">Send Private</button>
+  </div>
+</div>
 
-    function startChat() {
-      const nameInput = document.getElementById('username');
-      const picInput = document.getElementById('picInput');
+<div id="sidebar">
+  <h3>Online Users</h3>
+  <div id="userList"></div>
+</div>
 
-      if (!nameInput.value) {
-        alert("Please enter your name.");
-        return;
-      }
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  let username = '';
+  let profilePic = '';
+  let privateTo = null;
 
-      username = nameInput.value;
-      const file = picInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          profilePic = e.target.result;
-          showChat();
-          socket.emit('join', { user: username, pic: profilePic });
-        };
-        reader.readAsDataURL(file);
-      } else {
+  function startChat() {
+    const nameInput = document.getElementById('username');
+    const picInput = document.getElementById('picInput');
+
+    if (!nameInput.value) {
+      alert("Please enter your name.");
+      return;
+    }
+
+    username = nameInput.value;
+    const file = picInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        profilePic = e.target.result;
         showChat();
         socket.emit('join', { user: username, pic: profilePic });
-      }
-    }
-
-    function showChat() {
-      document.getElementById('login').style.display = 'none';
-      document.getElementById('chat').style.display = 'block';
-    }
-
-    function send() {
-      const input = document.getElementById('msg');
-      const message = {
-        user: username,
-        pic: profilePic,
-        text: input.value
       };
-      socket.emit('message', message);
-      input.value = '';
+      reader.readAsDataURL(file);
+    } else {
+      showChat();
+      socket.emit('join', { user: username, pic: profilePic });
     }
+  }
 
-    const messages = document.getElementById('messages');
-    socket.on('message', data => {
-      const div = document.createElement('div');
-      div.innerHTML = `<strong>${data.user}</strong><br>
-        ${data.pic ? `<img src="${data.pic}" />` : ''}<br>
-        ${data.text}<hr>`;
-      messages.appendChild(div);
-    });
+  function showChat() {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('chat').style.display = 'block';
+  }
 
-    // Online users list
-    const userList = document.getElementById('userList');
-    socket.on('onlineUsers', users => {
-      userList.innerHTML = '';
-      users.forEach(u => {
+  function send() {
+    const input = document.getElementById('msg');
+    const message = {
+      user: username,
+      pic: profilePic,
+      text: input.value
+    };
+    socket.emit('message', message);
+    input.value = '';
+  }
+
+  socket.on('message', data => {
+    const div = document.createElement('div');
+    div.innerHTML = `<strong>${data.user}</strong><br>
+      ${data.pic ? `<img src="${data.pic}" />` : ''}<br>
+      ${data.text}<hr>`;
+    document.getElementById('messages').appendChild(div);
+  });
+
+  socket.on('privateMessage', data => {
+    const div = document.createElement('div');
+    div.innerHTML = `<strong>${data.user}</strong>: ${data.text}`;
+    document.getElementById('privateMessages').appendChild(div);
+  });
+
+  // Online user list
+  const userList = document.getElementById('userList');
+  socket.on('onlineUsers', users => {
+    userList.innerHTML = '';
+    users.forEach(u => {
+      if (u.user !== username) {
         const div = document.createElement('div');
         div.classList.add('user');
-        div.innerHTML = `<img src="${u.pic}" alt="Pic" /><span>${u.user}</span>`;
+        div.innerHTML = `<img src="${u.pic}" /><span>${u.user}</span>`;
         div.onclick = () => {
-          alert(`You clicked ${u.user}. (Private chat feature coming soon!)`);
+          privateTo = u.id;
+          document.getElementById('privateChat').style.display = 'block';
+          document.getElementById('privateTitle').innerText = `Chatting with ${u.user}`;
         };
         userList.appendChild(div);
-      });
-    });
-
-    // Preview image
-    document.getElementById('picInput').addEventListener('change', function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          document.getElementById('preview').src = e.target.result;
-          document.getElementById('preview').style.display = 'block';
-        };
-        reader.readAsDataURL(file);
       }
     });
-  </script>
+  });
+
+  function sendPrivate() {
+    const input = document.getElementById('privateMsg');
+    if (!privateTo) return;
+    socket.emit('privateMessage', {
+      to: privateTo,
+      user: username,
+      text: input.value
+    });
+    input.value = '';
+  }
+
+  document.getElementById('picInput').addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById('preview').src = e.target.result;
+        document.getElementById('preview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
 
 </body>
 </html>
