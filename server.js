@@ -65,7 +65,7 @@ setInterval(() => {
     text,
     time: new Date().toLocaleString()
   });
-}, 45000); // ১৫ সেকেন্ড পর পর
+}, 15000); // ১৫ সেকেন্ড পর পর
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
