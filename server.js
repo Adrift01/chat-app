@@ -4,69 +4,87 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const path = require('path');
 
+// Static folder serve
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Main route
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
+// Online user list
 let onlineUsers = {};
 
-// Real user connection
+// Socket.io connection
 io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+  console.log('Ekjon user connect korse:', socket.id);
 
+  // Jokhon user join kore
   socket.on('join', (data) => {
-    onlineUsers[socket.id] = { id: socket.id, user: data.user, pic: data.pic };
+    onlineUsers[socket.id] = {
+      id: socket.id,
+      user: data.user,
+      pic: data.pic
+    };
     io.emit('onlineUsers', Object.values(onlineUsers));
   });
 
+  // Public message pathale
   socket.on('message', (data) => {
     io.emit('message', data);
   });
 
+  // Private message
   socket.on('privateMessage', (data) => {
     io.to(data.to).emit('privateMessage', data);
   });
 
+  // Disconnect handle
   socket.on('disconnect', () => {
+    console.log('User disconnect korse:', socket.id);
     delete onlineUsers[socket.id];
     io.emit('onlineUsers', Object.values(onlineUsers));
-    console.log('A user disconnected:', socket.id);
   });
 });
 
-// Fake bot users (without pictures)
-const botUsers = ['Tania💖', 'Ratul🔥', 'Priya😍', 'Mehedi😎', 'Riya💫'];
-
-const randomMessages = [
-  "ভাই আমি একা বোর ফিল করতেসি!",
-  "কে আছো, একটু গল্প করি?",
-  "কারো সাথে চ্যাট করতে ইচ্ছা করছে 🤭",
-  "বৃষ্টি হচ্ছে বাইরে, আর আমি একা...",
-  "এইটা কি প্রেমের জায়গা নাকি? 😉",
-  "তোমার নামটা শুনতে চাই 😅",
-  "আজকে সবাই কেমন আছো?",
-  "কে আছো যে আমার সাথে প্রাইভেটে চ্যাট করবে? 😘",
-  "একটু হেসে নাও, লাইফ একটাই! 😊",
-  "এই রুমে কেউ ভালোবাসা খুঁজতেসে?"
+// Fake bot user list
+const botUsers = [
+  { user: 'Tania💖', pic: '' },
+  { user: 'Ratul🔥', pic: '' },
+  { user: 'Priya😍', pic: '' },
+  { user: 'Mehedi😎', pic: '' },
+  { user: 'Riya💫', pic: '' }
 ];
 
-// Send fake bot messages every 50 seconds
+// Random message list
+const randomMessages = [
+  "Hey! Kew ekhane?",
+  "Chat korte mon chaiche 😘",
+  "Private e asho keu 🫣",
+  "Kew ekta funny joke bolo toh!",
+  "Bore hoye gelam...",
+  "Ei chat room ta interesting 🤔",
+  "Tomra sobai koi gelo? 🥺",
+  "Kaw kotha bolbe?",
+  "Mon kharap... kichu bolo 🥹",
+  "Ami notun ekhane 👋"
+];
+
+// Bot message every 50 seconds
 setInterval(() => {
-  const botName = botUsers[Math.floor(Math.random() * botUsers.length)];
-  const message = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+  const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
+  const text = randomMessages[Math.floor(Math.random() * randomMessages.length)];
 
   io.emit('message', {
-    user: botName,
-    pic: '', // No profile picture
-    text: message,
+    user: bot.user,
+    pic: bot.pic, // Pic chaile link boshai dite paro
+    text: text,
     time: new Date().toLocaleString()
   });
-}, 50000); // প্রতি ৫০ সেকেন্ডে
+}, 50000); // 50 second por por
 
-// Start server
+// Server start
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
-  console.log('Server running on port', PORT);
+  console.log('Server cholse on port', PORT);
 });
