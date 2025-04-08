@@ -8,12 +8,19 @@
       font-family: sans-serif;
       background: #222;
       color: white;
-      text-align: center;
       margin: 0;
+      display: flex;
+      height: 100vh;
     }
     #container {
-      max-width: 600px;
-      margin: 50px auto;
+      flex: 3;
+      padding: 20px;
+    }
+    #sidebar {
+      flex: 1;
+      background: #111;
+      padding: 10px;
+      overflow-y: auto;
     }
     #login {
       margin-top: 20px;
@@ -36,13 +43,26 @@
       border: none;
     }
     img {
-      max-width: 100px;
+      max-width: 80px;
       border-radius: 50%;
       margin-top: 10px;
+    }
+    .user {
+      margin-bottom: 15px;
+      cursor: pointer;
+    }
+    .user img {
+      max-width: 40px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    .user span {
+      vertical-align: middle;
     }
   </style>
 </head>
 <body>
+
   <div id="container">
     <h2>Talk with Strangers 💬</h2>
     
@@ -58,6 +78,11 @@
       <input id="msg" placeholder="Type your message..." />
       <button onclick="send()">Send</button>
     </div>
+  </div>
+
+  <div id="sidebar">
+    <h3>Online Users</h3>
+    <div id="userList"></div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -82,10 +107,12 @@
         reader.onload = function (e) {
           profilePic = e.target.result;
           showChat();
+          socket.emit('join', { user: username, pic: profilePic });
         };
         reader.readAsDataURL(file);
       } else {
         showChat();
+        socket.emit('join', { user: username, pic: profilePic });
       }
     }
 
@@ -114,12 +141,27 @@
       messages.appendChild(div);
     });
 
-    // Show image preview
-    document.getElementById('picInput').addEventListener('change', function() {
+    // Online users list
+    const userList = document.getElementById('userList');
+    socket.on('onlineUsers', users => {
+      userList.innerHTML = '';
+      users.forEach(u => {
+        const div = document.createElement('div');
+        div.classList.add('user');
+        div.innerHTML = `<img src="${u.pic}" alt="Pic" /><span>${u.user}</span>`;
+        div.onclick = () => {
+          alert(`You clicked ${u.user}. (Private chat feature coming soon!)`);
+        };
+        userList.appendChild(div);
+      });
+    });
+
+    // Preview image
+    document.getElementById('picInput').addEventListener('change', function () {
       const file = this.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           document.getElementById('preview').src = e.target.result;
           document.getElementById('preview').style.display = 'block';
         };
@@ -127,5 +169,6 @@
       }
     });
   </script>
+
 </body>
 </html>
