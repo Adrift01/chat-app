@@ -38,11 +38,11 @@ io.on('connection', (socket) => {
 
 // Fake bot users
 const botUsers = [
-  { user: 'Tania💖', pic: 'https://i.ibb.co/Wn8bFfq/girl1.jpg' },
-  { user: 'Ratul🔥', pic: 'https://i.ibb.co/Xz1Kyb4/boy1.jpg' },
-  { user: 'Priya😍', pic: 'https://i.ibb.co/QXQ3LGL/girl2.jpg' },
-  { user: 'Mehedi😎', pic: 'https://i.ibb.co/0nNSmnv/boy2.jpg' },
-  { user: 'Riya💫', pic: 'https://i.ibb.co/tQygMzH/girl3.jpg' }
+  { user: 'Tania💖', pic: '' },
+  { user: 'Ratul🔥', pic: '' },
+  { user: 'Priya😍', pic: '' },
+  { user: 'Mehedi😎', pic: '' },
+  { user: 'Riya💫', pic: '' }
 ];
 
 const randomMessages = [
@@ -65,7 +65,7 @@ setInterval(() => {
     text,
     time: new Date().toLocaleString()
   });
-}, 15000); // ১৫ সেকেন্ড পর পর
+}, 45000); // ১৫ সেকেন্ড পর পর
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
