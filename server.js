@@ -38,11 +38,11 @@ io.on('connection', (socket) => {
 
 // Fake bot users
 const botUsers = [
-  { user: 'Tania💖', pic: '' },
-  { user: 'Ratul🔥', pic: '' },
-  { user: 'Priya😍', pic: '' },
-  { user: 'Mehedi😎', pic: '' },
-  { user: 'Riya💫', pic: '' }
+  { user: 'Tania💖', pic: 'https://www.facebook.com/photo/?fbid=607443165623407&set=pb.100090731875932.-2207520000' },
+  { user: 'Ratul🔥', pic: 'https://www.facebook.com/photo/?fbid=122117928830800326&set=a.122117065244800326' },
+  { user: 'Priya😍', pic: 'https://www.facebook.com/photo/?fbid=384360151265044&set=pb.100090731875932.-2207520000' },
+  { user: 'Mehedi😎', pic: 'https://www.facebook.com/photo/?fbid=122133869666368720&set=pb.61561061609977.-2207520000' },
+  { user: 'Riya💫', pic: 'https://www.facebook.com/photo/?fbid=623483557107089&set=pcb.623483737107071' }
 ];
 
 const randomMessages = [
