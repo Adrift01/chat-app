@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 
 let onlineUsers = {};
 
-// Socket.io logic
+// Real user connection
 io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
 
@@ -36,38 +36,37 @@ io.on('connection', (socket) => {
   });
 });
 
-// Fake bot users
-const botUsers = [
-  { user: 'Tania💖', pic: 'https://www.facebook.com/photo/?fbid=607443165623407&set=pb.100090731875932.-2207520000' },
-  { user: 'Ratul🔥', pic: 'https://www.facebook.com/photo/?fbid=122117928830800326&set=a.122117065244800326' },
-  { user: 'Priya😍', pic: 'https://www.facebook.com/photo/?fbid=384360151265044&set=pb.100090731875932.-2207520000' },
-  { user: 'Mehedi😎', pic: 'https://www.facebook.com/photo/?fbid=122133869666368720&set=pb.61561061609977.-2207520000' },
-  { user: 'Riya💫', pic: 'https://www.facebook.com/photo/?fbid=623483557107089&set=pcb.623483737107071' }
-];
+// Fake bot users (without pictures)
+const botUsers = ['Tania💖', 'Ratul🔥', 'Priya😍', 'Mehedi😎', 'Riya💫'];
 
 const randomMessages = [
-  "Hey! Kew ekhane?",
-  "Chat korte mon chaiche 😘",
-  "Private e asho keu 🫣",
-  "Kew ekta funny joke bolo toh!",
-  "Bore hoye gelam...",
-  "Ei chat room ta interesting 🤔",
-  "Tomra sobai koi gelo? 🥺"
+  "ভাই আমি একা বোর ফিল করতেসি!",
+  "কে আছো, একটু গল্প করি?",
+  "কারো সাথে চ্যাট করতে ইচ্ছা করছে 🤭",
+  "বৃষ্টি হচ্ছে বাইরে, আর আমি একা...",
+  "এইটা কি প্রেমের জায়গা নাকি? 😉",
+  "তোমার নামটা শুনতে চাই 😅",
+  "আজকে সবাই কেমন আছো?",
+  "কে আছো যে আমার সাথে প্রাইভেটে চ্যাট করবে? 😘",
+  "একটু হেসে নাও, লাইফ একটাই! 😊",
+  "এই রুমে কেউ ভালোবাসা খুঁজতেসে?"
 ];
 
+// Send fake bot messages every 50 seconds
 setInterval(() => {
-  const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
-  const text = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+  const botName = botUsers[Math.floor(Math.random() * botUsers.length)];
+  const message = randomMessages[Math.floor(Math.random() * randomMessages.length)];
 
   io.emit('message', {
-    user: bot.user,
-    pic: bot.pic,
-    text,
+    user: botName,
+    pic: '', // No profile picture
+    text: message,
     time: new Date().toLocaleString()
   });
-}, 15000); // ১৫ সেকেন্ড পর পর
+}, 50000); // প্রতি ৫০ সেকেন্ডে
 
+// Start server
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
-  console.log('Server listening on port', PORT);
+  console.log('Server running on port', PORT);
 });
