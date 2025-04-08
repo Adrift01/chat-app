@@ -8,18 +8,18 @@
       font-family: sans-serif;
       background: #222;
       color: white;
+      text-align: center;
       margin: 0;
-      display: flex;
+    }
+    #container {
+      max-width: 600px;
+      margin: 50px auto;
+    }
+    #login {
+      margin-top: 20px;
     }
     #chat {
-      flex: 3;
-      padding: 20px;
-    }
-    #users {
-      flex: 1;
-      background: #111;
-      padding: 20px;
-      border-left: 2px solid #444;
+      display: none;
     }
     #messages {
       height: 300px;
@@ -27,82 +27,105 @@
       background: #333;
       padding: 10px;
       border-radius: 10px;
-      margin-bottom: 10px;
     }
     input, button {
       padding: 10px;
+      margin-top: 10px;
       width: 80%;
       border-radius: 5px;
       border: none;
     }
-    .user {
-      margin-bottom: 10px;
-      cursor: pointer;
-      padding: 5px;
-      background: #444;
-      border-radius: 5px;
-    }
-    .user:hover {
-      background: #555;
+    img {
+      max-width: 100px;
+      border-radius: 50%;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div id="chat">
+  <div id="container">
     <h2>Talk with Strangers 💬</h2>
-    <div id="messages"></div>
-    <input id="msg" placeholder="Type your message..." />
-    <button onclick="send()">Send</button>
-  </div>
-
-  <div id="users">
-    <h3>Online Users</h3>
-    <div id="userList"></div>
+    
+    <div id="login">
+      <input type="text" id="username" placeholder="Enter your name" /><br>
+      <input type="file" id="picInput" accept="image/*" /><br>
+      <img id="preview" src="#" style="display: none;" /><br>
+      <button onclick="startChat()">Start Chat</button>
+    </div>
+    
+    <div id="chat">
+      <div id="messages"></div>
+      <input id="msg" placeholder="Type your message..." />
+      <button onclick="send()">Send</button>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-    const messages = document.getElementById('messages');
-    const userList = document.getElementById('userList');
-    let currentTarget = null;
+    let username = '';
+    let profilePic = '';
 
-    socket.on('message', ({ from, text }) => {
-      const div = document.createElement('div');
-      div.textContent = `${from}: ${text}`;
-      messages.appendChild(div);
-    });
+    function startChat() {
+      const nameInput = document.getElementById('username');
+      const picInput = document.getElementById('picInput');
 
-    socket.on('userList', users => {
-      userList.innerHTML = '';
-      users.forEach(id => {
-        if (id === socket.id) return; // skip self
-        const userDiv = document.createElement('div');
-        userDiv.textContent = id;
-        userDiv.classList.add('user');
-        userDiv.onclick = () => {
-          currentTarget = id;
-          alert("Now chatting with: " + id);
+      if (!nameInput.value) {
+        alert("Please enter your name.");
+        return;
+      }
+
+      username = nameInput.value;
+      const file = picInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profilePic = e.target.result;
+          showChat();
         };
-        userList.appendChild(userDiv);
-      });
-    });
+        reader.readAsDataURL(file);
+      } else {
+        showChat();
+      }
+    }
+
+    function showChat() {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('chat').style.display = 'block';
+    }
 
     function send() {
       const input = document.getElementById('msg');
-      if (currentTarget) {
-        socket.emit('privateMessage', {
-          to: currentTarget,
-          text: input.value
-        });
-        const div = document.createElement('div');
-        div.textContent = `You: ${input.value}`;
-        messages.appendChild(div);
-      } else {
-        alert("Select a user first!");
-      }
+      const message = {
+        user: username,
+        pic: profilePic,
+        text: input.value
+      };
+      socket.emit('message', message);
       input.value = '';
     }
+
+    const messages = document.getElementById('messages');
+    socket.on('message', data => {
+      const div = document.createElement('div');
+      div.innerHTML = `<strong>${data.user}</strong><br>
+        ${data.pic ? `<img src="${data.pic}" />` : ''}<br>
+        ${data.text}<hr>`;
+      messages.appendChild(div);
+    });
+
+    // Show image preview
+    document.getElementById('picInput').addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('preview').src = e.target.result;
+          document.getElementById('preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
   </script>
 </body>
 </html>
