@@ -1,57 +1,94 @@
+// প্রয়োজনীয় modules import করছি
 const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
-
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 const path = require('path');
-const users = {}; // Store user info with socket.id
 
-app.use(express.static(path.join(__dirname, 'public'))); // Serve frontend
+// Static ফাইল সার্ভ করার জন্য public folder use করা
+app.use(express.static(path.join(__dirname, 'public')));
 
+// "/" route এ index.html পাঠানো
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// অনলাইনে থাকা ইউজারদের লিস্ট রাখার জন্য object
+let onlineUsers = {};
+
+// Socket.IO দিয়ে connection listen করছি
 io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+  console.log('🔥 New user connected:', socket.id);
 
-  // When a user joins
+  // কেউ join করলে তার info স্টোর করা
   socket.on('join', (data) => {
-    users[socket.id] = { id: socket.id, user: data.user, pic: data.pic };
-    io.emit('onlineUsers', Object.values(users));
+    onlineUsers[socket.id] = {
+      id: socket.id,
+      user: data.user,
+      pic: data.pic
+    };
+    io.emit('onlineUsers', Object.values(onlineUsers));
   });
 
-  // Public message
-  socket.on('message', (msg) => {
-    const timestamp = new Date().toLocaleString();
-    io.emit('message', { ...msg, timestamp });
+  // পাবলিক ম্যাসেজ পাঠানো হলে broadcast করা
+  socket.on('message', (data) => {
+    io.emit('message', data);
   });
 
-  // Private message
-  socket.on('privateMessage', (msg) => {
-    const timestamp = new Date().toLocaleString();
-    io.to(msg.to).emit('privateMessage', {
-      user: msg.user,
-      text: msg.text,
-      timestamp
-    });
-
-    // Also show it to the sender
-    socket.emit('privateMessage', {
-      user: msg.user + ' (You)',
-      text: msg.text,
-      timestamp
-    });
+  // প্রাইভেট ম্যাসেজ পাঠানো হলে নির্দিষ্ট user কে পাঠানো
+  socket.on('privateMessage', (data) => {
+    io.to(data.to).emit('privateMessage', data);
   });
 
-  // Disconnect
+  // কেউ disconnect করলে list থেকে remove
   socket.on('disconnect', () => {
-    delete users[socket.id];
-    io.emit('onlineUsers', Object.values(users));
-    console.log('A user disconnected:', socket.id);
+    console.log('❌ User disconnected:', socket.id);
+    delete onlineUsers[socket.id];
+    io.emit('onlineUsers', Object.values(onlineUsers));
   });
 });
 
-// Start server
+
+// ========== FAKE BOT USERS SETUP ==========
+
+// Bot user list (profile pic লাগলে link বসাও, না লাগলে খালি রেখো)
+const botUsers = [
+  { user: 'Tania💖', pic: '' },
+  { user: 'Ratul🔥', pic: '' },
+  { user: 'Priya😍', pic: '' },
+  { user: 'Mehedi😎', pic: '' },
+  { user: 'Riya💫', pic: '' }
+];
+
+// র‍্যান্ডম ম্যাসেজ লিস্ট যা bot রা পাঠাবে
+const randomMessages = [
+  "Hey! কেউ এখানে আছো?",
+  "আজকে মুড অফ 😔",
+  "Private e আসো কেউ 🥵",
+  "একটা জোক বলো তো কেউ 😂",
+  "চলো আড্ডা দেই 🥰",
+  "সবার সাথে কথা বলতে ইচ্ছা করছে 😚",
+  "তোমরা কোথায়? 😢",
+  "আমি bored... 😩",
+  "নতুন কেউ আছো এখানে? 👀",
+  "মন খারাপ... কেউ কথা বলো 🥹"
+];
+
+// প্রতি ৫০ সেকেন্ড পরপর একেকটা bot র‍্যান্ডম মেসেজ দিবে
+setInterval(() => {
+  const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
+  const text = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+
+  io.emit('message', {
+    user: bot.user,
+    pic: bot.pic,
+    text: text,
+    time: new Date().toLocaleString()
+  });
+}, 50000); // প্রতি ৫০ সেকেন্ড
+
+// Server port সেট করা
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+http.listen(PORT, () => {
+  console.log(`🚀 Server is running at http://localhost:${PORT}`);
 });
