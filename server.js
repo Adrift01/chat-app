@@ -4,26 +4,31 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const path = require('path');
 
-// Serve static files (like index.html)
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, '/')));
 
-// Handle socket connection
+let users = [];
+
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  // When a user sends a message
-  socket.on('message', (data) => {
-    io.emit('message', data); // Broadcast message to all users
+  socket.on('join', (userData) => {
+    socket.userData = userData;
+    users.push({ id: socket.id, ...userData });
+    io.emit('onlineUsers', users);
   });
 
-  // When a user disconnects
+  socket.on('message', (msg) => {
+    io.emit('message', msg);
+  });
+
   socket.on('disconnect', () => {
     console.log('A user disconnected');
+    users = users.filter(u => u.id !== socket.id);
+    io.emit('onlineUsers', users);
   });
 });
 
-// Start the server
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
