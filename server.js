@@ -1,82 +1,94 @@
-// প্রয়োজনীয় modules import করছি
+// Modules import
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const path = require('path');
 
-// Static ফাইল সার্ভ করার জন্য public folder use করা
+// Static file serve from public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// "/" route এ index.html পাঠানো
+// index.html serve
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// অনলাইনে থাকা ইউজারদের লিস্ট রাখার জন্য object
+// Online user list
 let onlineUsers = {};
-
-// Bot গুলার আলাদা socket ID গুলা রাখার জন্য
 let botSocketIds = {};
 
-// Fake bot user list
+// Bot list (20 জন)
 const botUsers = [
-  { id: 'bot1', user: 'Tania💖', pic: '' },
-  { id: 'bot2', user: 'Ratul🔥', pic: '' },
-  { id: 'bot3', user: 'Priya😍', pic: '' },
-  { id: 'bot4', user: 'Mehedi😎', pic: '' },
-  { id: 'bot5', user: 'Riya💫', pic: '' }
+  { id: 'bot1', user: 'Tania', pic: '' },
+  { id: 'bot2', user: 'Ratul', pic: '' },
+  { id: 'bot3', user: 'Priya', pic: '' },
+  { id: 'bot4', user: 'Mehedi', pic: '' },
+  { id: 'bot5', user: 'Riya', pic: '' },
+  { id: 'bot6', user: 'Nihal', pic: '' },
+  { id: 'bot7', user: 'Sneha', pic: '' },
+  { id: 'bot8', user: 'Ayaan', pic: '' },
+  { id: 'bot9', user: 'Kriti', pic: '' },
+  { id: 'bot10', user: 'Kabir', pic: '' },
+  { id: 'bot11', user: 'Neha', pic: '' },
+  { id: 'bot12', user: 'Zayed', pic: '' },
+  { id: 'bot13', user: 'Mira', pic: '' },
+  { id: 'bot14', user: 'Farhan', pic: '' },
+  { id: 'bot15', user: 'Alia', pic: '' },
+  { id: 'bot16', user: 'Samir', pic: '' },
+  { id: 'bot17', user: 'Rina', pic: '' },
+  { id: 'bot18', user: 'Rohit', pic: '' },
+  { id: 'bot19', user: 'Sadia', pic: '' },
+  { id: 'bot20', user: 'Adil', pic: '' }
 ];
 
-// র‍্যান্ডম ম্যাসেজ লিস্ট যা bot রা পাঠাবে
+// Public message list (Banglish + English + Hindi-English)
 const randomMessages = [
-  "Hey! Kew ekhane?",
-  "Mood off today 😔",
-  "Private e asho keu 😉",
-  "Kichu moja korte chai 😅",
-  "Ami onek lonely feel kortesi...",
-  "Keu ekta joke bolbe? 😂",
-  "Tumi kothay thako?",
-  "Ei chat room ta onek mojaar!",
-  "Tomar sathe kotha bolte bhalo lagse 💬",
-  "Ektu break nei, pore ashi!"
+  "Hello everyone!", "Kemon acho sobai?", "Ajke onek boring lagche 😒",
+  "Tum sab kahan ho?", "Let's have some fun 😄", "Private e aiso na ektu 😉",
+  "Kya haal hai dosto?", "Ami coffee khete jacchi ☕", "Chat korle bhalo lage",
+  "Kew ekta joke sunao 😆", "Koi movie dekhecho?", "Tumi kotheke chat korcho?",
+  "Mujhe thoda lonely lag raha hai", "Cholo game khela jai 🎮", "Tomar sathe kotha bole bhalo laglo",
+  "Kaun hai yahan active?", "Aj school gelo?", "Facebook use korcho?",
+  "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao"
 ];
 
-// Socket.IO দিয়ে connection listen করছি
+// Server connection
 io.on('connection', (socket) => {
   console.log('🔥 New user connected:', socket.id);
 
-  // Join event handle
   socket.on('join', (data) => {
     onlineUsers[socket.id] = {
       id: socket.id,
       user: data.user,
       pic: data.pic
     };
-
     io.emit('onlineUsers', Object.values(onlineUsers));
   });
 
-  // Public message handle
   socket.on('message', (data) => {
     io.emit('message', data);
   });
 
-  // Private message handle
   socket.on('privateMessage', (data) => {
-    // Regular private message delivery
     io.to(data.to).emit('privateMessage', data);
 
-    // যদি কেউ bot কে private এ message দেয়, তাহলেই reply
+    // Bot ke jodi PM kora hoy
     const targetBot = botUsers.find(bot => botSocketIds[bot.id] === data.to);
     if (targetBot) {
-      // 3-6 সেকেন্ডের মধ্যে reply দিবে
       const delay = Math.floor(Math.random() * 3000) + 3000;
-
       setTimeout(() => {
-        const replyText = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+        const replies = [
+          "Hi, tum bhalo lagcho ❤️",
+          "Amake call korbe? 🤭",
+          "Video call e dekha hobe? 😍",
+          "Private e kotha bhalo lagche!",
+          "Ami tomake call dite chai 😉",
+          "Just tap the video call button! 💬"
+        ];
+        const replyText = replies[Math.floor(Math.random() * replies.length)];
         io.to(socket.id).emit('privateMessage', {
           user: targetBot.user,
+          pic: targetBot.pic,
           text: replyText,
           time: new Date().toLocaleString()
         });
@@ -84,7 +96,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  // Disconnect
   socket.on('disconnect', () => {
     console.log('❌ User disconnected:', socket.id);
     delete onlineUsers[socket.id];
@@ -92,14 +103,10 @@ io.on('connection', (socket) => {
   });
 });
 
-// ======== BOT SYSTEM ========
-
-// Bot user গুলাকে manually connect করা
+// Bots ke onlineUser list e add kore dichi
 botUsers.forEach((bot, index) => {
   const botId = `bot_${index}_${Date.now()}`;
   botSocketIds[bot.id] = botId;
-
-  // Online user list এ bot দেরও যোগ করলাম
   onlineUsers[botId] = {
     id: botId,
     user: bot.user,
@@ -107,20 +114,19 @@ botUsers.forEach((bot, index) => {
   };
 });
 
-// প্রতি ৫০ সেকেন্ড পরপর bot random message পাঠাবে public এ
+// Bots will send random public message every 50s
 setInterval(() => {
   const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
   const text = randomMessages[Math.floor(Math.random() * randomMessages.length)];
-
   io.emit('message', {
     user: bot.user,
     pic: bot.pic,
     text: text,
     time: new Date().toLocaleString()
   });
-}, 50000); // প্রতি ৫০ সেকেন্ড
+}, 50000);
 
-// Server port সেট করা
+// Server run
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
   console.log(`🚀 Server is running at http://localhost:${PORT}`);
