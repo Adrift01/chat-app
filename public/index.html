@@ -22,7 +22,7 @@
     }
 
     #header h2 {
-      color: #FFD700; /* Bright yellow color for the header */
+      color: #FFD700;
       font-size: 2rem;
     }
 
@@ -49,14 +49,15 @@
       overflow-y: auto;
       max-height: calc(100vh - 40px);
       position: relative;
+      display: none; /* Hide sidebar initially */
     }
 
     #sidebar h3 {
-      color: green; /* Change text color to green for Online Users */
-      position: sticky; /* Keeps the heading fixed at the top */
-      top: 0; /* Stick it to the top of the sidebar */
-      background-color: #111; /* Same background as the sidebar */
-      z-index: 10; /* Ensures the text stays above other content */
+      color: green;
+      position: sticky;
+      top: 0;
+      background-color: #111;
+      z-index: 10;
       padding: 10px;
       margin: 0;
     }
@@ -145,16 +146,15 @@
       vertical-align: middle;
     }
 
-    /* Button styles */
     button {
-      background-color: #FFA500; /* Orange color for the button */
+      background-color: #FFA500;
       color: white;
       font-weight: bold;
       transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: #FF4500; /* Darker orange on hover */
+      background-color: #FF4500;
     }
 
     @media (max-width: 768px) {
@@ -178,7 +178,7 @@
         font-size: 1.5rem;
       }
       #messages, #privateMessages {
-        height: 200px; /* Reduce the height for smaller screens */
+        height: 200px;
       }
       img {
         max-width: 50px;
@@ -244,11 +244,8 @@
         <button onclick="window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')">Real Collection</button>
       </div>
 
-      <div id="sidebar">
-      <h3>Online Users (300+)</h3>
       <div id="userList"></div>
-      
-      
+      <h3>Online Users (300+)</h3>
     </div>
   </div>
 
@@ -292,6 +289,7 @@
     function showChat() {
       document.getElementById('login').style.display = 'none';
       document.getElementById('chat').style.display = 'block';
+      document.getElementById('sidebar').style.display = 'block';  // Show sidebar after login
     }
 
     function send() {
