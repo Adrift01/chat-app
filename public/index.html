@@ -16,22 +16,6 @@
     </form>
   </div>
 
-  <script>
-    // If already logged in, redirect to chat
-    if (localStorage.getItem("username")) {
-      window.location.href = "index.html";
-    }
-
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const username = document.getElementById("username").value;
-      const profilePic = document.getElementById("profilePic").value;
-
-      localStorage.setItem("username", username);
-      localStorage.setItem("profilePic", profilePic);
-
-      window.location.href = "chat.html";
-    });
-  </script>
+  
 </body>
 </html>
