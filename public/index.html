@@ -32,7 +32,6 @@
       flex-direction: row;
       padding: 10px;
       gap: 10px;
-      margin-left: 260px; /* Adjust margin to avoid overlap with the fixed sidebar */
     }
 
     #container {
@@ -44,15 +43,12 @@
     }
 
     #sidebar {
-      position: fixed; /* Fixed position */
-      top: 0;
-      left: 0;
-      width: 250px; /* Adjust width as needed */
-      height: 100vh; /* Full height */
+      flex: 1;
       background: #111;
       padding: 20px;
       overflow-y: auto;
-      z-index: 10; /* Ensure it stays above other content */
+      max-height: calc(100vh - 40px);
+      position: relative;
     }
 
     #sidebar h3 {
@@ -66,14 +62,8 @@
     }
 
     #sidebar #realVideoCollection {
-      position: fixed; /* Fix it on the left side */
-      top: 150px; /* Adjust this based on where you want it vertically */
-      left: 20px; /* Distance from the left edge */
-      width: 200px; /* Adjust width as needed */
-      background: #222; /* Background to match the sidebar */
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: add shadow for emphasis */
+      text-align: center;
+      margin-top: 20px;
     }
 
     #sidebar #realVideoCollection button {
@@ -94,7 +84,6 @@
     #sidebar #realVideoCollection h4 {
       color: #FFD700;
       font-size: 1.2rem;
-      margin-bottom: 10px;
     }
 
     #login, #chat, #privateChat {
@@ -249,12 +238,11 @@
     <div id="sidebar">
       <h3>Online Users (300+)</h3>
       <div id="userList"></div>
+      <div id="realVideoCollection">
+        <h4>Real video collection</h4>
+        <button onclick="window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')">Click to see</button>
+      </div>
     </div>
-  </div>
-
-  <div id="realVideoCollection">
-    <h4>Real video collection</h4>
-    <button onclick="window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')">Click to see</button>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
