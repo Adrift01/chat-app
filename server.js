@@ -47,13 +47,13 @@ const messages = [
   "Hello strangers!",
   "Ekdum mast vibes yaha!",
   "Time pass karna hai",
-  "Call karo kya?", "Hello everyone!", "Kemon acho sobai?", "Ajke onek boring lagche 😒",
+  "Video Call karo kya?", "Hello everyone!", "Kemon acho sobai?", "Ajke onek boring lagche 😒",
   "Tum sab kahan ho?", "Let's have some fun 😄", "Private e aiso na ektu 😉",
   "Kya haal hai dosto?", "Ami coffee khete jacchi ☕", "Chat korle bhalo lage",
   "Kew ekta joke sunao 😆", "Koi movie dekhecho?", "Tumi kotheke chat korcho?",
   "Mujhe thoda lonely lag raha hai", "Cholo game khela jai 🎮", "Tomar sathe kotha bole bhalo laglo",
-  "Kaun hai yahan active?", "Aj school gelo?", "Facebook use korcho?",
-  "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao","Free signup karke video call karo", "uper green button pe click karo then signup karo free mai video call kar payoge", "video call pe ajaw"
+  "Kaun hai yahan active?",  "Facebook use korcho?",
+  "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao","Free signup karke video call karo", "free signup button pe click karo then signup karo free mai video call kar payoge", "video call pe ajaw"
 ];
 
 function getRandomMessage() {
