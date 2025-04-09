@@ -10,7 +10,7 @@ const currentUserDisplay = document.getElementById("currentUser");
 const user = JSON.parse(localStorage.getItem("chatUser"));
 
 if (!user) {
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 socket.emit("join", user);
