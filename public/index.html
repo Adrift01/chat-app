@@ -23,16 +23,11 @@
       background: #111;
       padding: 15px;
       text-align: center;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
     }
 
     #header h2 {
       color: #FFD700;
       font-size: 2rem;
-      margin: 0;
     }
 
     #main {
@@ -40,7 +35,6 @@
       display: none;
       flex-direction: row;
       overflow: hidden;
-      margin-top: 70px; /* Space for fixed header */
     }
 
     #leftSidebar, #rightSidebar {
@@ -185,7 +179,6 @@
   <div id="header">
     <h2>Talk with Strangers 💬</h2>
   </div>
-
   <div id="login">
     <div style="text-align:center; padding: 20px;">
       <input type="text" id="username" placeholder="Enter your name" /><br>
