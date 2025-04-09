@@ -51,7 +51,44 @@ const randomMessages = [
   "Kaun hai yahan active?", "Aj school gelo?", "Facebook use korcho?",
   "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao", "Free signup karke video call pe ajaw", "signup free and video chat free", "video call pe ajaw free mai masti lo "
 ];
+// Utility: Random delay function
+function randomDelay(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
+// Every 90 seconds, random bot join korbe, msg dibe, then leave korbe
+setInterval(() => {
+  const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
+  const botId = `dynbot_${Date.now()}`;
+  
+  // Step 1: Bot join korche
+  onlineUsers[botId] = {
+    id: botId,
+    user: bot.user,
+    pic: bot.pic
+  };
+  io.emit('onlineUsers', Object.values(onlineUsers));
+  console.log(`🤖 ${bot.user} joined temporarily`);
+
+  // Step 2: Bot message dibe
+  const msg1 = randomMessages[Math.floor(Math.random() * randomMessages.length)];
+  setTimeout(() => {
+    io.emit('message', {
+      user: bot.user,
+      pic: bot.pic,
+      text: msg1,
+      time: new Date().toLocaleString()
+    });
+  }, 2000); // 2s delay
+
+  // Step 3: Bot leave korbe
+  setTimeout(() => {
+    delete onlineUsers[botId];
+    io.emit('onlineUsers', Object.values(onlineUsers));
+    console.log(`👋 ${bot.user} left`);
+  }, randomDelay(10000, 20000)); // 10–20s er moddhe leave korbe
+
+}, 90000); // Prottek 90s por por eta hobe
 // Server connection
 io.on('connection', (socket) => {
   console.log('🔥 New user connected:', socket.id);
