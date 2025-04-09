@@ -99,7 +99,57 @@
       background-color: #FF4500;
     }
 
-    #login, #chat, #privateChat {
+    #login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 80px);
+  background: linear-gradient(135deg, #1c1c1c, #333);
+}
+
+#loginBox {
+  background: #111;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+}
+
+#loginBox input {
+  width: 100%;
+  margin: 10px 0;
+  background: #222;
+  color: white;
+  border: 1px solid #333;
+}
+
+#loginBox button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  background: linear-gradient(135deg, #FFA500, #FF4500);
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s;
+}
+
+#loginBox button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #FF6347, #FFA07A);
+}
+
+#preview {
+  max-width: 100px;
+  border: 2px solid #FFA500;
+  border-radius: 50%;
+  margin-top: 10px;
+  display: none;
+}
+ #chat, #privateChat {
       margin-top: 10px;
       width: 100%;
       max-width: 600px;
@@ -180,13 +230,15 @@
     <h2>Talk with Strangers 💬</h2>
   </div>
   <div id="login">
-    <div style="text-align:center; padding: 20px;">
-      <input type="text" id="username" placeholder="Enter your name" /><br>
-      <input type="file" id="picInput" accept="image/*" /><br>
-      <img id="preview" src="#" style="display: none;" /><br>
-      <button onclick="startChat()">Start Chat</button>
-    </div>
+  <div id="loginBox">
+    <h3 style="color: #FFA500;">Start Chatting!</h3>
+    <input type="text" id="username" placeholder="Enter your name" />
+    <input type="file" id="picInput" accept="image/*" />
+    <img id="preview" src="#" />
+    <button onclick="startChat()">Start Chat</button>
   </div>
+</div>
+
 
   <div id="main">
     <div id="leftSidebar">
