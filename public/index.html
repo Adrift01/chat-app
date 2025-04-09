@@ -35,14 +35,24 @@
       overflow: hidden;
     }
 
-    #leftSidebar {
-      flex: 1;
+    #leftSidebar,
+    #rightSidebar {
       background-color: #111;
       color: white;
       padding: 20px;
       overflow-y: auto;
       max-height: 100vh;
       border-right: 1px solid #333;
+    }
+
+    #leftSidebar {
+      flex: 1;
+    }
+
+    #rightSidebar {
+      flex: 1;
+      border-left: 1px solid #333;
+      display: block;
     }
 
     #leftSidebar h3 {
@@ -73,17 +83,6 @@
       align-items: center;
     }
 
-    #rightSidebar {
-      flex: 1;
-      background-color: #111;
-      color: white;
-      padding: 20px;
-      overflow-y: auto;
-      max-height: 100vh;
-      border-left: 1px solid #333;
-      display: block;
-    }
-
     #videoCollection button {
       background-color: #FFA500;
       color: white;
@@ -102,6 +101,8 @@
 
     #login, #chat, #privateChat {
       margin-top: 10px;
+      width: 100%;
+      max-width: 500px;
     }
 
     #chat, #privateChat {
@@ -160,6 +161,40 @@
 
     button:hover {
       background-color: #FF4500;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 1024px) {
+      #main {
+        flex-direction: column;
+      }
+      #leftSidebar, #rightSidebar {
+        flex: none;
+        width: 100%;
+        max-height: 200px;
+        border: none;
+        border-bottom: 1px solid #333;
+      }
+      #rightSidebar {
+        border-top: 1px solid #333;
+        border-bottom: none;
+      }
+      #container {
+        flex: none;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #sendRow {
+        flex-direction: column;
+      }
+      #msg {
+        width: 100%;
+      }
+      button {
+        width: 100%;
+      }
     }
   </style>
 </head>
