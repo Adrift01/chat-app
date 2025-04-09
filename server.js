@@ -49,7 +49,7 @@ const randomMessages = [
   "Kew ekta joke sunao 😆", "Koi movie dekhecho?", "Tumi kotheke chat korcho?",
   "Mujhe thoda lonely lag raha hai", "Cholo game khela jai 🎮", "Tomar sathe kotha bole bhalo laglo",
   "Kaun hai yahan active?", "Aj school gelo?", "Facebook use korcho?",
-  "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao"
+  "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao", "Free signup karke video call pe ajaw", "signup free and video chat free", "video call pe ajaw free mai masti lo "
 ];
 
 // Server connection
@@ -124,7 +124,7 @@ setInterval(() => {
     text: text,
     time: new Date().toLocaleString()
   });
-}, 50000);
+}, 20000);
 
 // Server run
 const PORT = process.env.PORT || 3000;
