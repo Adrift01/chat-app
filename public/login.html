@@ -1,48 +1,36 @@
-<!-- public/login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
-  <div class="bg-white p-8 rounded shadow-md w-full max-w-sm">
-    <h2 class="text-2xl font-bold mb-6 text-center">Join Chat</h2>
-    <form id="loginForm" class="space-y-4">
-      <div>
-        <label for="username" class="block text-sm font-medium text-gray-700">Your Name</label>
-        <input type="text" id="username" name="username" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-300">
-      </div>
-      <div>
-        <label for="profilePic" class="block text-sm font-medium text-gray-700">Upload Profile Picture</label>
-        <input type="file" id="profilePic" name="profilePic" accept="image/*" class="mt-1 block w-full text-sm text-gray-500">
-      </div>
-      <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">Enter Chat</button>
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+    <h1 class="text-2xl font-bold mb-4 text-center">Enter Chat</h1>
+    <form id="loginForm" class="flex flex-col gap-4">
+      <input type="text" id="username" placeholder="Your Name" required class="border rounded px-4 py-2"/>
+      <input type="text" id="profilePic" placeholder="Profile Image URL" class="border rounded px-4 py-2"/>
+      <button type="submit" class="bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Join Chat</button>
     </form>
   </div>
 
   <script>
-    const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', async (e) => {
+    // If already logged in, redirect to chat
+    if (localStorage.getItem("username")) {
+      window.location.href = "chat.html";
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      const username = document.getElementById('username').value.trim();
-      const fileInput = document.getElementById('profilePic');
-      const file = fileInput.files[0];
+      const username = document.getElementById("username").value;
+      const profilePic = document.getElementById("profilePic").value;
 
-      let reader = new FileReader();
-      reader.onloadend = () => {
-        const picData = file ? reader.result : '';
-        localStorage.setItem('userData', JSON.stringify({ user: username, pic: picData }));
-        window.location.href = '/chat.html';
-      };
+      localStorage.setItem("username", username);
+      localStorage.setItem("profilePic", profilePic);
 
-      if (file) {
-        reader.readAsDataURL(file);
-      } else {
-        reader.onloadend(); // Call it directly if no file
-      }
+      window.location.href = "chat.html";
     });
   </script>
 </body>
