@@ -11,8 +11,8 @@ app.get('/', (req, res) => {
 });
 
 let onlineUsers = {};
+let botReplyCounter = {}; // Track how many replies each bot gave
 
-// Fake bot users
 const botUsers = [
   { id: 'bot1', user: 'Tania', pic: '' },
   { id: 'bot2', user: 'Ratul', pic: '' },
@@ -36,7 +36,6 @@ const botUsers = [
   { id: 'bot20', user: 'Zaid', pic: '' }
 ];
 
-// Message options
 const messages = [
   "Hey, what's up?",
   "Kya haal hai?",
@@ -47,12 +46,12 @@ const messages = [
   "Hello strangers!",
   "Ekdum mast vibes yaha!",
   "Time pass karna hai",
-  "Video Call karo kya?", "Hello everyone!", "Kemon acho sobai?", "Ajke onek boring lagche 😒",
+  "Call karo kya?", "Hello everyone!", "Kemon acho sobai?", "Ajke onek boring lagche 😒",
   "Tum sab kahan ho?", "Let's have some fun 😄", "Private e aiso na ektu 😉",
-  "Kya haal hai dosto?", "Ami coffee khete jacchi ☕", "Chat korle bhalo lage",
+  "Kya haal hai dosto?", "wana fun with me ? come to video chat now", "Chat korle bhalo lage",
   "Kew ekta joke sunao 😆", "Koi movie dekhecho?", "Tumi kotheke chat korcho?",
   "Mujhe thoda lonely lag raha hai", "Cholo game khela jai 🎮", "Tomar sathe kotha bole bhalo laglo",
-  "Kaun hai yahan active?",  "Facebook use korcho?",
+  "wow so many active users today", "video chat pe bohot jyada fun hua", "Facebook use korcho?",
   "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao","Free signup karke video call karo", "free signup button pe click karo then signup karo free mai video call kar payoge", "video call pe ajaw"
 ];
 
@@ -67,6 +66,7 @@ botUsers.forEach(bot => {
     user: bot.user,
     pic: bot.pic
   };
+  botReplyCounter[bot.id] = 0;
 });
 
 io.on('connection', (socket) => {
@@ -88,13 +88,19 @@ io.on('connection', (socket) => {
   socket.on('privateMessage', (data) => {
     io.to(data.to).emit('privateMessage', data);
 
-    // If sent to bot, auto reply
     const bot = botUsers.find(b => b.id === data.to);
     if (bot) {
+      const replyCount = ++botReplyCounter[bot.id];
+      let reply = getRandomMessage();
+
+      if (replyCount % 5 === 0) {
+        reply += " (Click video call 👇)";
+      }
+
       setTimeout(() => {
         io.to(socket.id).emit('privateMessage', {
           user: bot.user,
-          text: getRandomMessage() + " (Click video call 👇)",
+          text: reply,
           time: new Date().toLocaleString()
         });
       }, 3000 + Math.random() * 3000);
@@ -107,7 +113,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// Bots send message to public every 45s
+// Bots send message to public every 25s
 setInterval(() => {
   const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
   const message = {
@@ -117,7 +123,7 @@ setInterval(() => {
     time: new Date().toLocaleString()
   };
   io.emit('message', message);
-}, 25000);
+}, 15000);
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
