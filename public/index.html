@@ -30,8 +30,39 @@
       flex: 1;
       display: flex;
       flex-direction: row;
-      padding: 10px;
-      gap: 10px;
+      padding: 0;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    #leftSidebar {
+      flex: 1;
+      background-color: #111;
+      color: white;
+      padding: 20px;
+      overflow-y: auto;
+      max-height: 100vh;
+      border-right: 1px solid #333;
+    }
+
+    #leftSidebar h3 {
+      margin-top: 0;
+      color: #00FF00;
+    }
+
+    #userList .user {
+      padding: 8px;
+      margin-bottom: 5px;
+      background: #222;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #userList .user:hover {
+      background: #333;
     }
 
     #container {
@@ -42,37 +73,18 @@
       align-items: center;
     }
 
-    #sidebar {
+    #rightSidebar {
       flex: 1;
-      background: #111;
+      background-color: #111;
+      color: white;
       padding: 20px;
       overflow-y: auto;
-      max-height: calc(100vh - 40px);
-      position: relative;
-      display: none; /* Hide sidebar initially */
+      max-height: 100vh;
+      border-left: 1px solid #333;
+      display: block;
     }
 
-    #sidebar h3 {
-      color: green;
-      position: sticky;
-      top: 0;
-      background-color: #111;
-      z-index: 10;
-      padding: 10px;
-      margin: 0;
-    }
-
-    #sidebar #videoCollection {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    #sidebar #videoCollection h4 {
-      color: #FFD700;
-      font-size: 1.2rem;
-    }
-
-    #sidebar #videoCollection button {
+    #videoCollection button {
       background-color: #FFA500;
       color: white;
       font-weight: bold;
@@ -84,7 +96,7 @@
       margin-bottom: 10px;
     }
 
-    #sidebar #videoCollection button:hover {
+    #videoCollection button:hover {
       background-color: #FF4500;
     }
 
@@ -129,13 +141,6 @@
       margin-top: 10px;
     }
 
-    .user {
-      margin-bottom: 15px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-    }
-
     .user img {
       max-width: 40px;
       margin-right: 10px;
@@ -156,49 +161,6 @@
     button:hover {
       background-color: #FF4500;
     }
-
-    @media (max-width: 768px) {
-      #main {
-        flex-direction: column;
-        gap: 0;
-      }
-      #sidebar {
-        order: -1;
-        max-height: calc(100vh - 40px);
-        margin-bottom: 15px;
-      }
-      input, button {
-        width: 100%;
-      }
-      #sendRow {
-        flex-direction: column;
-        gap: 5px;
-      }
-      #header h2 {
-        font-size: 1.5rem;
-      }
-      #messages, #privateMessages {
-        height: 200px;
-      }
-      img {
-        max-width: 50px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      #header h2 {
-        font-size: 1.2rem;
-      }
-      input, button {
-        font-size: 0.9rem;
-      }
-      .user span {
-        font-size: 0.9rem;
-      }
-      #messages, #privateMessages {
-        height: 150px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -208,8 +170,14 @@
   </div>
 
   <div id="main">
-    <div id="container">
+    <!-- LEFT SIDEBAR -->
+    <div id="leftSidebar">
+      <h3>Online Users (300+)</h3>
+      <div id="userList"></div>
+    </div>
 
+    <!-- CHAT CONTAINER -->
+    <div id="container">
       <div id="login">
         <input type="text" id="username" placeholder="Enter your name" /><br>
         <input type="file" id="picInput" accept="image/*" /><br>
@@ -233,26 +201,18 @@
         <input id="privateMsg" placeholder="Type private message..." />
         <button onclick="sendPrivate()">Send Private</button>
       </div>
-
     </div>
 
-    <div id="sidebar">
+    <!-- RIGHT SIDEBAR -->
+    <div id="rightSidebar">
       <div id="videoCollection">
-        <h4>Videos Collection for Free</h4>
+        <h4>Videos Collection For Free Download</h4>
         <button onclick="window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')">New Collection</button>
-        <button onclick="window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')">Home Made Collection</button>
-        <button onclick="window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')">Real Collection</button>
+        <button onclick="window.open('https://1024terabox.com/s/1AAoYRRmDgHK8ecmI0z6fOw', '_blank')">Hot Webseries</button>
+        <button onclick="window.open('https://1024terabox.com/s/160hE5mIU_IuIMt6QpFDURw', '_blank')">Real Collection</button>
       </div>
-
-      <div id="sidebar">
-      <h3>Online Users (300+)</h3>
-      <div id="userList"></div>
-      
-      
     </div>
   </div>
-
-
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -294,7 +254,6 @@
     function showChat() {
       document.getElementById('login').style.display = 'none';
       document.getElementById('chat').style.display = 'block';
-      document.getElementById('sidebar').style.display = 'block';  // Show sidebar after login
     }
 
     function send() {
