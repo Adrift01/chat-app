@@ -5,6 +5,10 @@
   <title>ChatWithStranger</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: sans-serif;
       background: #222;
@@ -12,7 +16,7 @@
       margin: 0;
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      min-height: 100vh;
     }
 
     #header {
@@ -30,32 +34,29 @@
       flex: 1;
       display: flex;
       flex-direction: row;
-      padding: 0;
       gap: 0;
       overflow: hidden;
     }
 
-    #leftSidebar,
-    #rightSidebar {
+    #leftSidebar, #rightSidebar {
       background-color: #111;
       color: white;
       padding: 20px;
       overflow-y: auto;
       max-height: 100vh;
-      border-right: 1px solid #333;
+      border-left: 1px solid #333;
     }
 
     #leftSidebar {
       flex: 1;
+      border-right: 1px solid #333;
     }
 
     #rightSidebar {
       flex: 1;
-      border-left: 1px solid #333;
-      display: block;
     }
 
-    #leftSidebar h3 {
+    #leftSidebar h3, #videoCollection h4 {
       margin-top: 0;
       color: #00FF00;
     }
@@ -102,7 +103,7 @@
     #login, #chat, #privateChat {
       margin-top: 10px;
       width: 100%;
-      max-width: 500px;
+      max-width: 600px;
     }
 
     #chat, #privateChat {
@@ -111,7 +112,7 @@
 
     #messages, #privateMessages {
       height: 300px;
-      overflow-y: scroll;
+      overflow-y: auto;
       background: #333;
       padding: 10px;
       border-radius: 10px;
@@ -128,8 +129,8 @@
 
     #sendRow {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
     }
 
     #msg {
@@ -145,11 +146,6 @@
     .user img {
       max-width: 40px;
       margin-right: 10px;
-      vertical-align: middle;
-    }
-
-    .user span {
-      vertical-align: middle;
     }
 
     button {
@@ -163,55 +159,32 @@
       background-color: #FF4500;
     }
 
-    /* Responsive styles */
-    @media (max-width: 1024px) {
+    @media (max-width: 768px) {
       #main {
         flex-direction: column;
       }
+
       #leftSidebar, #rightSidebar {
         flex: none;
-        width: 100%;
         max-height: 200px;
-        border: none;
-        border-bottom: 1px solid #333;
       }
-      #rightSidebar {
-        border-top: 1px solid #333;
-        border-bottom: none;
-      }
+
       #container {
         flex: none;
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 600px) {
-      #sendRow {
-        flex-direction: column;
-      }
-      #msg {
-        width: 100%;
-      }
-      button {
-        width: 100%;
+        padding: 10px;
       }
     }
   </style>
 </head>
 <body>
-
   <div id="header">
     <h2>Talk with Strangers 💬</h2>
   </div>
-
   <div id="main">
-    <!-- LEFT SIDEBAR -->
     <div id="leftSidebar">
       <h3>Online Users (300+)</h3>
       <div id="userList"></div>
     </div>
-
-    <!-- CHAT CONTAINER -->
     <div id="container">
       <div id="login">
         <input type="text" id="username" placeholder="Enter your name" /><br>
@@ -219,7 +192,6 @@
         <img id="preview" src="#" style="display: none;" /><br>
         <button onclick="startChat()">Start Chat</button>
       </div>
-
       <div id="chat">
         <h3>Public Chat</h3>
         <div id="messages"></div>
@@ -229,7 +201,6 @@
           <button onclick="window.open('https://www.febspot.com/auth/google/?ref=725136', '_blank')">Free Signup to Video Chat</button>
         </div>
       </div>
-
       <div id="privateChat">
         <h3 id="privateTitle"></h3>
         <div id="privateMessages"></div>
@@ -237,8 +208,6 @@
         <button onclick="sendPrivate()">Send Private</button>
       </div>
     </div>
-
-    <!-- RIGHT SIDEBAR -->
     <div id="rightSidebar">
       <div id="videoCollection">
         <h4>Videos Collection For Free Download</h4>
@@ -248,7 +217,6 @@
       </div>
     </div>
   </div>
-
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
@@ -366,6 +334,5 @@
       }
     });
   </script>
-
 </body>
 </html>
