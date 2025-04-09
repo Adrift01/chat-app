@@ -21,20 +21,6 @@
       text-align: center;
     }
 
-    #header h2 {
-      margin: 0;
-    }
-
-    #header button {
-      background: #28a745;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-
     #main {
       flex: 1;
       display: flex;
@@ -73,9 +59,18 @@
     input, button {
       padding: 10px;
       margin-top: 10px;
-      width: 90%;
       border-radius: 5px;
       border: none;
+    }
+
+    #sendRow {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    #msg {
+      flex: 1;
     }
 
     img {
@@ -109,6 +104,9 @@
       input, button {
         width: 100%;
       }
+      #sendRow {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -116,9 +114,6 @@
 
   <div id="header">
     <h2>Talk with Strangers 💬</h2>
-    <button onclick="window.open('https://www.febspot.com/auth/google/?ref=725136', '_blank')">
-      Free Signup to Video Chat
-    </button>
   </div>
 
   <div id="main">
@@ -134,8 +129,11 @@
       <div id="chat">
         <h3>Public Chat</h3>
         <div id="messages"></div>
-        <input id="msg" placeholder="Type your message..." />
-        <button onclick="send()">Send</button>
+        <div id="sendRow">
+          <input id="msg" placeholder="Type your message..." />
+          <button onclick="send()">Send</button>
+          <button onclick="window.open('https://www.febspot.com/auth/google/?ref=725136', '_blank')">Free Signup to Video Chat</button>
+        </div>
       </div>
 
       <div id="privateChat">
@@ -148,7 +146,7 @@
     </div>
 
     <div id="sidebar">
-      <h3>Online Users</h3>
+      <h3>Online Users (300+)</h3>
       <div id="userList"></div>
     </div>
   </div>
@@ -162,7 +160,7 @@
 
     function formatTime() {
       const now = new Date();
-      return now.toLocaleString(); // shows date + time
+      return now.toLocaleString();
     }
 
     function startChat() {
@@ -250,7 +248,6 @@
         time: formatTime()
       };
 
-      // Show your own sent private messages
       const div = document.createElement('div');
       div.innerHTML = `<strong>You</strong> <small>${privateMsg.time}</small>: ${privateMsg.text}<hr>`;
       document.getElementById('privateMessages').appendChild(div);
