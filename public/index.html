@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>ChatWithStranger</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
@@ -32,9 +32,8 @@
 
     #main {
       flex: 1;
-      display: flex;
+      display: none;
       flex-direction: row;
-      gap: 0;
       overflow: hidden;
     }
 
@@ -180,18 +179,22 @@
   <div id="header">
     <h2>Talk with Strangers 💬</h2>
   </div>
+  <div id="login">
+    <div style="text-align:center; padding: 20px;">
+      <input type="text" id="username" placeholder="Enter your name" /><br>
+      <input type="file" id="picInput" accept="image/*" /><br>
+      <img id="preview" src="#" style="display: none;" /><br>
+      <button onclick="startChat()">Start Chat</button>
+    </div>
+  </div>
+
   <div id="main">
     <div id="leftSidebar">
       <h3>Online Users (300+)</h3>
       <div id="userList"></div>
     </div>
+
     <div id="container">
-      <div id="login">
-        <input type="text" id="username" placeholder="Enter your name" /><br>
-        <input type="file" id="picInput" accept="image/*" /><br>
-        <img id="preview" src="#" style="display: none;" /><br>
-        <button onclick="startChat()">Start Chat</button>
-      </div>
       <div id="chat">
         <h3>Public Chat</h3>
         <div id="messages"></div>
@@ -208,6 +211,7 @@
         <button onclick="sendPrivate()">Send Private</button>
       </div>
     </div>
+
     <div id="rightSidebar">
       <div id="videoCollection">
         <h4>Videos Collection For Free Download</h4>
@@ -217,6 +221,7 @@
       </div>
     </div>
   </div>
+
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
@@ -244,19 +249,19 @@
         const reader = new FileReader();
         reader.onload = function (e) {
           profilePic = e.target.result;
-          showChat();
-          socket.emit('join', { user: username, pic: profilePic });
+          completeLogin();
         };
         reader.readAsDataURL(file);
       } else {
-        showChat();
-        socket.emit('join', { user: username, pic: profilePic });
+        completeLogin();
       }
     }
 
-    function showChat() {
+    function completeLogin() {
       document.getElementById('login').style.display = 'none';
+      document.getElementById('main').style.display = 'flex';
       document.getElementById('chat').style.display = 'block';
+      socket.emit('join', { user: username, pic: profilePic });
     }
 
     function send() {
