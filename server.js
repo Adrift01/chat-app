@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 });
 
 let onlineUsers = {};
-let botReplyCounter = {}; // Track how many replies each bot gave
+let botReplyCounter = {}; // Track number of replies by each bot
 
 const botUsers = [
   { id: 'bot1', user: 'Tania', pic: '' },
@@ -46,20 +46,37 @@ const messages = [
   "Hello strangers!",
   "Ekdum mast vibes yaha!",
   "Time pass karna hai",
-  "Call karo kya?", "Hello everyone!", "Kemon acho sobai?", "Ajke onek boring lagche 😒",
-  "Tum sab kahan ho?", "Let's have some fun 😄", "Private e aiso na ektu 😉",
-  "Kya haal hai dosto?", "wana fun with me ? come to video chat now", "Chat korle bhalo lage",
-  "Kew ekta joke sunao 😆", "Koi movie dekhecho?", "Tumi kotheke chat korcho?",
-  "Mujhe thoda lonely lag raha hai", "Cholo game khela jai 🎮", "Tomar sathe kotha bole bhalo laglo",
-  "wow so many active users today", "video chat pe bohot jyada fun hua", "Facebook use korcho?",
-  "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao","Free signup karke video call karo", "free signup button pe click karo then signup karo free mai video call kar payoge", "video call pe ajaw"
+  "Call karo kya?",
+  "Hello everyone!",
+  "Kemon acho sobai?",
+  "Ajke onek boring lagche 😒",
+  "Tum sab kahan ho?",
+  "Let's have some fun 😄",
+  "Private e aiso na ektu 😉",
+  "Kya haal hai dosto?",
+  "wana fun with me ? come to video chat now",
+  "Chat korle bhalo lage",
+  "Kew ekta joke sunao 😆",
+  "Koi movie dekhecho?",
+  "Tumi kotheke chat korcho?",
+  "Mujhe thoda lonely lag raha hai",
+  "Cholo game khela jai 🎮",
+  "Tomar sathe kotha bole bhalo laglo",
+  "wow so many active users today",
+  "video chat pe bohot jyada fun hua",
+  "Facebook use korcho?",
+  "Aibar call e ashbo naki? 😅",
+  "Bujhlam na, ektu bujhao",
+  "Free signup karke video call karo",
+  "free signup button pe click karo then signup karo free mai video call kar payoge",
+  "video call pe ajaw"
 ];
 
 function getRandomMessage() {
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
-// Add all 20 bots to online list
+// Add bots to onlineUsers and init counter
 botUsers.forEach(bot => {
   onlineUsers[bot.id] = {
     id: bot.id,
@@ -90,20 +107,21 @@ io.on('connection', (socket) => {
 
     const bot = botUsers.find(b => b.id === data.to);
     if (bot) {
-      const replyCount = ++botReplyCounter[bot.id];
-      let reply = getRandomMessage();
+      botReplyCounter[bot.id]++;
+      const count = botReplyCounter[bot.id];
+      let replyText = getRandomMessage();
 
-      if (replyCount % 5 === 0) {
-        reply += " (Click video call 👇)";
+      if (count % 5 === 0) {
+        replyText += " (Click video call 👇)";
       }
 
       setTimeout(() => {
         io.to(socket.id).emit('privateMessage', {
           user: bot.user,
-          text: reply,
+          text: replyText,
           time: new Date().toLocaleString()
         });
-      }, 3000 + Math.random() * 3000);
+      }, 2500 + Math.random() * 2500);
     }
   });
 
@@ -113,7 +131,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// Bots send message to public every 25s
+// Bots send random public messages
 setInterval(() => {
   const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
   const message = {
