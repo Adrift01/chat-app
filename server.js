@@ -138,7 +138,7 @@ setInterval(() => {
     time: new Date().toLocaleString()
   };
   io.emit('message', message);
-}, 15000);
+},400);
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
