@@ -96,18 +96,9 @@ io.on('connection', (socket) => {
     io.emit('onlineUsers', Object.values(onlineUsers));
   });
 
-  socket.on('message', data => {
-  const div = document.createElement('div');
-  div.innerHTML = `<strong>${data.user}</strong> <small>${data.time}</small><br>
-    ${data.pic ? `<img src="${data.pic}" />` : ''}<br>
-    ${data.text}<hr>`;
-
-  const messagesContainer = document.getElementById('messages');
-  messagesContainer.appendChild(div);
-
-  // 👇 Auto-scroll to the bottom
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-});
+  socket.on('message', (data) => {
+    io.emit('message', data);
+  });
 
   socket.on('privateMessage', (data) => {
     io.to(data.to).emit('privateMessage', data);
@@ -147,7 +138,7 @@ setInterval(() => {
     time: new Date().toLocaleString()
   };
   io.emit('message', message);
-}1400);
+}, 1400);
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
