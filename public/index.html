@@ -134,20 +134,42 @@
     align-items: center;
   }
 
+  /* Updated Video Collection Styles */
+  #videoCollection {
+    background: #1a1a1a;
+    padding: 20px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+  }
+
+  #videoCollection h3 {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #FFA500;
+    margin-bottom: 15px;
+  }
+
   #videoCollection button {
     background-color: #FFA500;
     color: white;
     font-weight: bold;
     padding: 15px;
     width: 100%;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
     margin-bottom: 10px;
   }
 
   #videoCollection button:hover {
     background-color: #FF4500;
+    transform: scale(1.03);
   }
 
   #login {
@@ -280,6 +302,10 @@
     #container {
       padding: 10px;
     }
+
+    #videoCollection {
+      max-width: 90%;
+    }
   }
 
   @media (max-width: 600px) {
@@ -298,8 +324,13 @@
     #preview {
       max-width: 80px;
     }
+
+    #videoCollection button {
+      font-size: 0.95rem;
+    }
   }
 </style>
+
 </head>
 <body>
   <div id="header">
