@@ -355,6 +355,36 @@
     transform: translateX(-100%);
   }
 }
+    .public-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+
+    .scrolling-text {
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+      width: 400px;
+    }
+
+    .scrolling-text::before {
+      content: attr(data-text);
+      position: absolute;
+      animation: scroll-left 10s linear infinite;
+      color: #facc15; /* bright yellow */
+    }
+
+    @keyframes scroll-left {
+      0% {
+        left: 100%;
+      }
+      100% {
+        left: -100%;
+      }
+    }
+  
 
 </style>
 
@@ -381,8 +411,13 @@
     </div>
 
     <div id="container">
-      <div id="chat">
-        <h3>Public Chat</h3>
+      <div class="public-chat-header">
+  <h2>Public Chat</h2>
+  <div class="scrolling-text">
+    🔥  To start video chat Click on Free signp to video chat and signup with gmail 🎥
+  </div>
+</div>
+
         <div id="messages"></div>
         <div id="sendRow">
           <input id="msg" placeholder="Type your message..." />
