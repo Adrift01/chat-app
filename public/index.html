@@ -40,7 +40,6 @@
   #leftSidebar {
     width: 250px;
     height: 100vh;
-    overflow: hidden;
     background: #111;
     border-right: 1px solid #333;
     display: flex;
@@ -98,6 +97,12 @@
 
   .user:hover {
     background: #333;
+  }
+
+  .user img {
+    max-width: 40px;
+    margin-right: 10px;
+    border-radius: 50%;
   }
 
   #rightSidebar {
@@ -235,11 +240,6 @@
     margin-top: 10px;
   }
 
-  .user img {
-    max-width: 40px;
-    margin-right: 10px;
-  }
-
   button {
     background-color: #FFA500;
     color: white;
@@ -251,22 +251,49 @@
     background-color: #FF4500;
   }
 
-  @media (max-width: 768px) {
+  /* Responsive layout */
+  @media (max-width: 1024px) {
     #main {
       flex-direction: column;
     }
 
-    #leftSidebar, #rightSidebar {
-      flex: none;
-      max-height: 200px;
+    #leftSidebar {
+      width: 100%;
+      height: auto;
+      max-height: 250px;
+      border-right: none;
+      border-bottom: 1px solid #333;
+    }
+
+    #rightSidebar {
+      max-height: 250px;
+      padding: 15px;
     }
 
     #container {
-      flex: none;
       padding: 10px;
     }
   }
+
+  @media (max-width: 600px) {
+    #header h2 {
+      font-size: 1.5rem;
+    }
+
+    .user img {
+      max-width: 30px;
+    }
+
+    #loginBox {
+      padding: 20px;
+    }
+
+    #preview {
+      max-width: 80px;
+    }
+  }
 </style>
+
 
 </head>
 <body>
