@@ -361,7 +361,94 @@
     #videoCollection button {
       font-size: 0.95rem;
     }
+    
   }
+    @media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  #main {
+    flex-direction: column;
+  }
+
+  #leftSidebar, #rightSidebar {
+    width: 100%;
+    max-height: 300px;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #333;
+  }
+
+  #leftSidebar h3, #rightSidebar h4 {
+    font-size: 1rem;
+  }
+
+  #container {
+    padding: 10px;
+    align-items: stretch;
+  }
+
+  #videoCollection {
+    max-width: 100%;
+  }
+
+  #chat, #privateChat {
+    max-width: 100%;
+  }
+
+  #userList {
+    max-height: 200px;
+  }
+
+  #login {
+    padding-top: 60px;
+    height: auto;
+  }
+
+  #loginBox {
+    margin: 20px;
+    width: 95%;
+  }
+
+  .user {
+    font-size: 0.9rem;
+  }
+
+  .user img {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  #header h2 {
+    font-size: 1.3rem;
+  }
+
+  #videoCollection button {
+    font-size: 0.85rem;
+    padding: 12px;
+  }
+
+  #loginBox {
+    padding: 20px 15px;
+  }
+
+  #sendRow {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #msg {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
 </style>
 
 </head>
