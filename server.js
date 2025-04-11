@@ -36,12 +36,13 @@ const botUsers = [
   { id: 'bot37', user: 'Rajiv' }, { id: 'bot38', user: 'Sapna' },
   { id: 'bot39', user: 'Himel' }, { id: 'bot40', user: 'Rehan Ahmed' },
   { id: 'bot41', user: 'Tithi' }, { id: 'bot42', user: 'Joy' },
-  { id: 'bot43', user: 'Sayem Hossain' }
+  { id: 'bot43', user: 'Sayem Hossain' }, { id: 'bot44', user: 'Meena Khatun' }, { id: 'bot45', user: 'Mota lund' }, { id: 'bot46', user: 'Big Fat Dick' },
+  { id: 'bot47', user: 'Desi boy raju' }, { id: 'bot48', user: 'Horny payel' }, { id: 'bot49', user: 'Rupa dey' }, { id: 'bot50', user: 'Niti dutta' },
 ];
 
 const messages = [
-  "Hi there!", "Kya haal hai?", "Ki khobor?", "What's going on?",
-  "Tumhara naam ki hai?", "Bore lagche tai chat e eshechi",
+  "Hi there!", "Kya haal hai?", "i wana fun with you baby come to video call now i am alone", "What's going on?",
+  "Koi hya jo video call pe ayega abhi?", "Bore lagche tai chat e eshechi",
   "Let's play a game!", "Tomake dekhte bhalo lagche 😅",
   "Arey baap re eto active log!", "Video chat try korle bhalo lage",
   "Ajke toh sobai onek active!", "Tum kahaan se ho?",
@@ -49,13 +50,13 @@ const messages = [
   "Let's be friends!", "Free signup diye chat korte paro 😄",
   "Emon kono din chat e ashi na 😆", "Nice talking to you!",
   "Cholo ekta joke boli 🤣", "Tumi ki facebook use koro?",
-  "Aj office gelo?", "Movie dekhecho recently?",
+  "khel ba ?", "Movie dekhecho recently?",
   "Call korbo naki? 😋", "Ami toh ekdom free ekhon",
   "Sotti, tumi onek bhalo chat partner",
-  "Tumi kon class e poro?", "Khubi bhalo lagche kotha bole","wana fun with me ? come to video chat now",
+  "Tumi kon class e poro?", "i am very naughty baby","wana fun with me ? come to video chat now",
   "Chat korle bhalo lage",
   "Kew ekta joke sunao 😆",
-  "Koi movie dekhecho?",
+  "mujhe xxx movie dekhaoge koi?",
   "Tumi kotheke chat korcho?",
   "Mujhe thoda lonely lag raha hai",
   "Cholo game khela jai 🎮",
@@ -67,7 +68,10 @@ const messages = [
   "Bujhlam na, ektu bujhao",
   "Free signup karke video call karo",
   "free signup button pe click karo then signup karo free mai video call kar payoge",
-  "video call pe ajaw"
+  "video call pe ajaw",
+  "hi",
+  "kaha se ho?",
+  "how old are you ?"
 ];
 
 function getRandomMessage() {
