@@ -72,13 +72,6 @@ const messages = [
 
 function getRandomMessage() {
   return messages[Math.floor(Math.random() * messages.length)];
-  const replies = [
-    "Hi",
-    "okay lets chat here first 🤖",
-    "you can give video call now",
-    "i will tell you everything there 😉"
-  ];
-  return replies[Math.floor(Math.random() * replies.length)];
 }
 
 // Add bots to onlineUsers and set counter
@@ -105,17 +98,6 @@ io.on('connection', (socket) => {
 
   socket.on('message', (data) => {
     io.emit('message', data);
-    // Mention check
-    const mentionedBot = botUsers.find(bot => data.text.includes(`@${bot.user}`));
-    if (mentionedBot) {
-      setTimeout(() => {
-        io.emit('message', {
-          user: mentionedBot.user,
-          text: getRandomMessage(),
-          time: new Date().toLocaleString()
-        });
-      }, Math.random() * 3000 + 1000); // 1-4 sec delay
-    }
   });
 
   socket.on('privateMessage', (data) => {
