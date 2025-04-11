@@ -355,36 +355,42 @@
     transform: translateX(-100%);
   }
 }
-    .public-chat-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 10px;
-    }
+ .public-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-    .scrolling-text {
-      white-space: nowrap;
-      overflow: hidden;
-      position: relative;
-      width: 400px;
-    }
+.scrolling-text {
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  width: 400px;
+  max-width: 90%;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #facc15; /* bright yellow */
+}
 
-    .scrolling-text::before {
-      content: attr(data-text);
-      position: absolute;
-      animation: scroll-left 10s linear infinite;
-      color: #facc15; /* bright yellow */
-    }
+.scrolling-text::before {
+  content: attr(data-text);
+  position: absolute;
+  animation: scroll-left 10s linear infinite;
+  color: #facc15;
+}
 
-    @keyframes scroll-left {
-      0% {
-        left: 100%;
-      }
-      100% {
-        left: -100%;
-      }
-    }
-  
+@keyframes scroll-left {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: -100%;
+  }
+}
+
 
 </style>
 
@@ -411,14 +417,8 @@
     </div>
 
     <div id="container">
-      <div class="public-chat-header">
-  <h2>Public Chat</h2>
-  <div class="scrolling-text">
-    🔥  To start video chat Click on Free signp to video chat and signup with gmail 🎥
-  </div>
-</div>
-
-        <div id="messages"></div>
+ 
+       <div id="messages"></div>
         <div id="sendRow">
           <input id="msg" placeholder="Type your message..." />
           <button onclick="send()">Send</button>
