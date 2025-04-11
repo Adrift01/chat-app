@@ -387,7 +387,9 @@
         <div id="sendRow">
           <input id="msg" placeholder="Type your message..." />
           <button onclick="send()">Send</button>
-          <button onclick="window.open('https://www.febspot.com/auth/google/?ref=725136', '_blank')">Free Signup to Video Chat</button>
+          <button onclick="window.open('https://www.febspot.com/auth/google/?ref=725136', '_blank')" style="background: linear-gradient(135deg, #ff6a00, #ee0979); color: white; font-weight: bold; padding: 15px 25px; font-size: 1rem; border: none; border-radius: 12px; box-shadow: 0 0 10px rgba(255, 105, 180, 0.5); cursor: pointer; transition: transform 0.2s ease, box-shadow 0.3s ease;">
+  💬 Free Signup to Video Chat
+</button>
         </div>
       </div>
       <div id="privateChat">
@@ -559,5 +561,17 @@
   // Start the loop
   updateOnlineCount();
 </script>
+  <script>
+  const button = document.querySelector('button');
+  button.onmouseover = () => {
+    button.style.transform = "scale(1.05)";
+    button.style.boxShadow = "0 0 20px rgba(255, 105, 180, 0.8)";
+  };
+  button.onmouseout = () => {
+    button.style.transform = "scale(1)";
+    button.style.boxShadow = "0 0 10px rgba(255, 105, 180, 0.5)";
+  };
+</script>
+  
 </body>
 </html>
