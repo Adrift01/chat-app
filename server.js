@@ -105,6 +105,18 @@ io.on('connection', (socket) => {
 
   socket.on('message', (data) => {
     io.emit('message', data);
+    // Mention check
+    const mentionedBot = botUsers.find(bot => data.text.includes(`@${bot.user}`));
+    if (mentionedBot) {
+      setTimeout(() => {
+        io.emit('message', {
+          user: mentionedBot.user,
+          text: getRandomMessage(),
+          time: new Date().toLocaleString()
+        });
+      }, Math.random() * 3000 + 1000); // 1-4 sec delay
+    }
+  });
   });
 
   socket.on('privateMessage', (data) => {
