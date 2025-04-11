@@ -355,7 +355,7 @@
     transform: translateX(-100%);
   }
 }
- .public-chat-header {
+.public-chat-header {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -391,7 +391,6 @@
   }
 }
 
-
 </style>
 
 </head>
@@ -417,13 +416,14 @@
     </div>
 
     <div id="container">
- <div class="public-chat-header">
+      <div id="chat">
+        <div class="public-chat-header">
   <h2>Public Chat</h2>
   <div class="scrolling-text" data-text="🔥 300+ Users Online! Click the button to see real videos 🎥">
-    🔥 300+ Users Online! Click the button to see real videos 🎥
   </div>
 </div>
-       <div id="messages"></div>
+
+        <div id="messages"></div>
         <div id="sendRow">
           <input id="msg" placeholder="Type your message..." />
           <button onclick="send()">Send</button>
