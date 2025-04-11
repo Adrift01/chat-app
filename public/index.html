@@ -218,7 +218,33 @@
         flex-direction: column;
       }
 
-      #leftSidebar, #rightSidebar {
+      #leftSidebar {
+  width: 250px;
+  height: 100vh;
+  overflow: hidden;
+  background: #f0f0f0;
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+}
+
+#leftSidebar h3 {
+  margin: 0;
+  padding: 15px;
+  background: #ddd;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  flex-shrink: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+#userList {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding: 10px;
+}
+ #rightSidebar {
         flex: none;
         max-height: 200px;
       }
@@ -247,8 +273,7 @@
 
   <div id="main">
     <div id="leftSidebar">
-      <h3>Online Users (3300+)</h3></div>
-
+      <h3>Online Users (7300+)</h3>
       <div id="userList"></div>
     </div>
 
