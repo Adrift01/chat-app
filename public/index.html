@@ -43,6 +43,39 @@
     overflow: hidden;
     padding-top: 80px;
   }
+    
+#scrollingNote {
+  width: 100%;
+  overflow: hidden;
+  background: #ff4500;
+  color: white;
+  font-weight: bold;
+  padding: 8px 0;
+  position: fixed;
+  top: 0;
+  z-index: 20;
+}
+
+.scrollText {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll-left 15s linear infinite;
+  padding-left: 100%;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Shift header and login down a bit to avoid overlap */
+#header, #login {
+  margin-top: 40px;
+}
 
   #leftSidebar {
     width: 250px;
@@ -333,6 +366,12 @@
 
 </head>
 <body>
+  <div id="scrollingNote">
+  <div class="scrollText">
+    🔥 Stay anonymous and enjoy random video chat! just free signup with Gmail to start video chat 🔥
+  </div>
+</div>
+
   <div id="header">
     <h2>Free Random Video chat 💬</h2>
   </div>
