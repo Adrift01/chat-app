@@ -329,6 +329,33 @@
       font-size: 0.95rem;
     }
   }
+    .sidebarScrollingNote {
+  width: 100%;
+  overflow: hidden;
+  background: #ff4500;
+  color: white;
+  font-weight: bold;
+  padding: 8px 0;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.sidebarScrollText {
+  display: inline-block;
+  white-space: nowrap;
+  animation: sidebarScroll 12s linear infinite;
+  padding-left: 100%;
+}
+
+@keyframes sidebarScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 </style>
 
 </head>
@@ -372,6 +399,10 @@
     </div>
 
     <div id="rightSidebar">
+      <div class="sidebarScrollingNote">
+  <div class="sidebarScrollText">📢Videos Collection For Free Download updated daily!🔥</div>
+</div>
+
       <div id="videoCollection">
         <h4>Videos Collection For Free Download</h4>
         <button onclick="window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')">New Collection</button>
