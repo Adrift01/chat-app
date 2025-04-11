@@ -117,7 +117,6 @@ io.on('connection', (socket) => {
       }, Math.random() * 3000 + 1000); // 1-4 sec delay
     }
   });
-  });
 
   socket.on('privateMessage', (data) => {
     io.to(data.to).emit('privateMessage', data);
