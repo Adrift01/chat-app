@@ -356,7 +356,15 @@
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 });
 
-
+// Username click kore mention add
+document.getElementById('messages').addEventListener('click', function(e) {
+  if (e.target.classList.contains('username')) {
+    const name = e.target.innerText;
+    const input = document.getElementById('messageInput');
+    input.value = `@${name} `;
+    input.focus();
+  }
+});
 
     socket.on('privateMessage', data => {
   if (!userColors[data.user]) {
