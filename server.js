@@ -128,17 +128,28 @@ io.on('connection', (socket) => {
   });
 });
 
-// Bots send public message every 15s
-setInterval(() => {
-  const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
-  const message = {
-    user: bot.user,
-    pic: bot.pic,
-    text: getRandomMessage(),
-    time: new Date().toLocaleString()
-  };
-  io.emit('message', message);
-}, 1400);
+function botRandomMessageLoop() {
+  const delay = Math.floor(Math.random() * 8000) + 2000; // 2s to 10s
+
+  setTimeout(() => {
+    const botCount = Math.floor(Math.random() * 3) + 1; // 1 to 3 bots will reply
+    for (let i = 0; i < botCount; i++) {
+      const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
+      const message = {
+        user: bot.user,
+        pic: bot.pic,
+        text: getRandomMessage(),
+        time: new Date().toLocaleString()
+      };
+      io.emit('message', message);
+    }
+
+    botRandomMessageLoop(); // recursive call for next round
+  }, delay);
+}
+
+// Start the random bot loop
+botRandomMessageLoop();
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
