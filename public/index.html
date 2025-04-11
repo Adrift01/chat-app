@@ -369,11 +369,6 @@
       return now.toLocaleString();
     }
 
-    function highlightMentions(text) {
-  return text.replace(/@(\w+)/g, '<span style="color: #FFA500; font-weight: bold;">@$1</span>');
-}
-
-
     function startChat() {
       const nameInput = document.getElementById('username');
       const picInput = document.getElementById('picInput');
@@ -439,6 +434,10 @@
     });
 
     const userList = document.getElementById('userList');
+    
+    function highlightMentions(text) {
+  return text.replace(/@(\w+)/g, '<span style="color: #FFA500; font-weight: bold;">@$1</span>');
+}
     socket.on('onlineUsers', users => {
       userList.innerHTML = '';
       users.forEach(u => {
