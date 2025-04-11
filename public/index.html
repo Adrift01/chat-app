@@ -43,39 +43,6 @@
     overflow: hidden;
     padding-top: 80px;
   }
-    
-#scrollingNote {
-  width: 100%;
-  overflow: hidden;
-  background: #ff4500;
-  color: white;
-  font-weight: bold;
-  padding: 8px 0;
-  position: fixed;
-  top: 0;
-  z-index: 20;
-}
-
-.scrollText {
-  display: inline-block;
-  white-space: nowrap;
-  animation: scroll-left 15s linear infinite;
-  padding-left: 100%;
-}
-
-@keyframes scroll-left {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-/* Shift header and login down a bit to avoid overlap */
-#header, #login {
-  margin-top: 40px;
-}
 
   #leftSidebar {
     width: 250px;
@@ -361,109 +328,14 @@
     #videoCollection button {
       font-size: 0.95rem;
     }
-    
   }
-    @media (max-width: 768px) {
-  body {
-    flex-direction: column;
-  }
-
-  #main {
-    flex-direction: column;
-  }
-
-  #leftSidebar, #rightSidebar {
-    width: 100%;
-    max-height: 300px;
-    border-right: none;
-    border-left: none;
-    border-bottom: 1px solid #333;
-  }
-
-  #leftSidebar h3, #rightSidebar h4 {
-    font-size: 1rem;
-  }
-
-  #container {
-    padding: 10px;
-    align-items: stretch;
-  }
-
-  #videoCollection {
-    max-width: 100%;
-  }
-
-  #chat, #privateChat {
-    max-width: 100%;
-  }
-
-  #userList {
-    max-height: 200px;
-  }
-
-  #login {
-    padding-top: 60px;
-    height: auto;
-  }
-
-  #loginBox {
-    margin: 20px;
-    width: 95%;
-  }
-
-  .user {
-    font-size: 0.9rem;
-  }
-
-  .user img {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-@media (max-width: 480px) {
-  #header h2 {
-    font-size: 1.3rem;
-  }
-
-  #videoCollection button {
-    font-size: 0.85rem;
-    padding: 12px;
-  }
-
-  #loginBox {
-    padding: 20px 15px;
-  }
-
-  #sendRow {
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  #msg {
-    width: 100%;
-  }
-
-  button {
-    width: 100%;
-  }
-}
-
 </style>
 
 </head>
 <body>
-  <div id="scrollingNote">
-  <div class="scrollText">
-     🎥 New video chat partners are joining every second by free signup with gmail... Don’t miss out – start chatting now!" 🔥 Videos Collection For Free Download updated hourly! 🔥
-  </div>
-</div>
-
   <div id="header">
     <h2>Free Random Video chat 💬</h2>
   </div>
-</body>
-  <body> 
 
   <div id="login">
     <div id="loginBox">
@@ -477,7 +349,7 @@
 
   <div id="main">
     <div id="leftSidebar">
-  <h3 id="onlineUserCount">Online Users (5000)</h3>
+  <h3 id="onlineUserCount">Online Users (5000+)</h3>
   <div id="userList"></div>
     </div>
 
@@ -501,7 +373,7 @@
 
     <div id="rightSidebar">
       <div id="videoCollection">
-        <h4>18+ Videos Collection Free Download</h4>
+        <h4>Videos Collection For Free Download</h4>
         <button onclick="window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')">New Collection</button>
         <button onclick="window.open('https://1024terabox.com/s/1AAoYRRmDgHK8ecmI0z6fOw', '_blank')">Hot Webseries</button>
         <button onclick="window.open('https://1024terabox.com/s/160hE5mIU_IuIMt6QpFDURw', '_blank')">Real Collection</button>
