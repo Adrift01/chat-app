@@ -411,7 +411,9 @@
       input.value = '';
     }
 
-    socket.on('message', data => {
+    socket.on('message', data => { function highlightMentions(text) {
+  return text.replace(/@(\w+)/g, '<span style="color: #FFA500; font-weight: bold;">@$1</span>');
+}
       const div = document.createElement('div');
       if (!userColors[data.user]) {
         userColors[data.user] = getRandomColor();
@@ -434,10 +436,6 @@
     });
 
     const userList = document.getElementById('userList');
-    
-    function highlightMentions(text) {
-  return text.replace(/@(\w+)/g, '<span style="color: #FFA500; font-weight: bold;">@$1</span>');
-}
     socket.on('onlineUsers', users => {
       userList.innerHTML = '';
       users.forEach(u => {
