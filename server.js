@@ -104,13 +104,32 @@ io.on('connection', (socket) => {
     io.emit('message', data);
   });
 
-  socket.on('privateMessage', (data) => {
-    io.to(data.to).emit('privateMessage', data);
+  socket.on('privateMessage', async (data) => {
+  io.to(data.to).emit('privateMessage', data);
 
-    const bot = botUsers.find(b => b.id === data.to);
-    if (bot) {
-      const replyCount = ++botReplyCounter[bot.id];
-      let reply = getRandomMessage();
+  const bot = botUsers.find(b => b.id === data.to);
+  if (bot) {
+    const replyCount = ++botReplyCounter[bot.id];
+
+    // GPT API Call
+    try {
+      const gptRes = await fetch("https://api.pawan.krd/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer pk-IFvwbrxntjieXssxGQxPLUnZOqvXXMuaFWsyANDhvimfTEZi" // <-- Replace with your real key
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [
+            { role: "system", content: "You are a fun, flirty, friendly girl chatting casually." },
+            { role: "user", content: data.text }
+          ]
+        })
+      });
+
+      const gptData = await gptRes.json();
+      let reply = gptData.choices?.[0]?.message?.content || "😉";
 
       if (replyCount % 5 === 0) {
         reply += " (Click video call 👇)";
@@ -123,8 +142,13 @@ io.on('connection', (socket) => {
           time: new Date().toLocaleString()
         });
       }, 2000 + Math.random() * 3000);
+
+    } catch (err) {
+      console.error("GPT Error:", err);
     }
-  });
+  }
+});
+
 
   socket.on('disconnect', () => {
     delete onlineUsers[socket.id];
