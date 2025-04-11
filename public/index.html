@@ -369,6 +369,11 @@
       return now.toLocaleString();
     }
 
+    function highlightMentions(text) {
+  return text.replace(/@(\w+)/g, '<span style="color: #FFA500; font-weight: bold;">@$1</span>');
+}
+
+
     function startChat() {
       const nameInput = document.getElementById('username');
       const picInput = document.getElementById('picInput');
@@ -440,10 +445,6 @@
         if (u.user !== username) {
           const div = document.createElement('div');
           div.classList.add('user');
-          function highlightMentions(text) {
-  return text.replace(/@(\w+)/g, '<span style="color: #FFA500; font-weight: bold;">@$1</span>');
-}
-
           div.innerHTML = `<strong style="color: ${userColors[data.user]}">${data.user}</strong> <small>${data.time}</small><br>
   ${data.pic ? `<img src="${data.pic}" />` : ''}<br>
   ${highlightMentions(data.text)}<hr>`;
