@@ -104,50 +104,43 @@ io.on('connection', (socket) => {
     io.emit('message', data);
   });
 
-  socket.on('privateMessage', async (data) => {
-  io.to(data.to).emit('privateMessage', data);
+ socket.on("privateMessage", async (data) => {
+  const { from, to, text, time } = data;
 
-  const bot = botUsers.find(b => b.id === data.to);
-  if (bot) {
-    const replyCount = ++botReplyCounter[bot.id];
+  // Send to actual user if online
+  if (users[to]) {
+    io.to(users[to]).emit("privateMessage", { user: from, text, time });
+  }
 
-    // GPT API Call
-    try {
-      const gptRes = await fetch("https://api.pawan.krd/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer pk-IFvwbrxntjieXssxGQxPLUnZOqvXXMuaFWsyANDhvimfTEZi" // <-- Replace with your real key
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [
-            { role: "system", content: "You are a fun, flirty, friendly girl chatting casually." },
-            { role: "user", content: data.text }
-          ]
-        })
-      });
+  // If it's a bot, generate smart reply
+  if (isBot(to)) {
+    const response = await fetch("https://api.pawan.krd/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer pk-IFvwbrxntjieXssxGQxPLUnZOqvXXMuaFWsyANDhvimfTEZi"
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          { role: "system", content: "You are a fun, flirty, friendly girl chatting casually." },
+          { role: "user", content: text }
+        ]
+      })
+    });
 
-      const gptData = await gptRes.json();
-      let reply = gptData.choices?.[0]?.message?.content || "😉";
+    const gptData = await response.json();
+    const reply = gptData.choices[0].message.content;
 
-      if (replyCount % 5 === 0) {
-        reply += " (Click video call 👇)";
-      }
-
-      setTimeout(() => {
-        io.to(socket.id).emit('privateMessage', {
-          user: bot.user,
-          text: reply,
-          time: new Date().toLocaleString()
-        });
-      }, 2000 + Math.random() * 3000);
-
-    } catch (err) {
-      console.error("GPT Error:", err);
-    }
+    // Send reply to original sender
+    io.to(users[from]).emit("privateMessage", {
+      user: to,
+      text: reply,
+      time: new Date().toLocaleTimeString()
+    });
   }
 });
+
 
 
   socket.on('disconnect', () => {
