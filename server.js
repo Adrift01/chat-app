@@ -104,21 +104,23 @@ io.on('connection', (socket) => {
     io.emit('message', data);
   });
 
-socket.on('privateMessage', async (data) => {
+  socket.on('privateMessage', async (data) => {
   io.to(data.to).emit('privateMessage', data);
 
   const bot = botUsers.find(b => b.id === data.to);
   if (bot) {
     const replyCount = ++botReplyCounter[bot.id];
 
-    // GPT API Call
+    // Default reply
+    let reply = getRandomMessage();
+
     try {
       const gptRes = await fetch("https://api.pawan.krd/v1/chat/completions", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer pk-IFvwbrxntjieXssxGQxPLUnZOqvXXMuaFWsyANDhvimfTEZi" // <-- Replace with your real key
-        },
+  "Content-Type": "application/json",
+  "Authorization": "Bearer pk-IFvwbrxntjieXssxGQxPLUnZOqvXXMuaFWsyANDhvimfTEZi"
+}
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
           messages: [
@@ -129,27 +131,30 @@ socket.on('privateMessage', async (data) => {
       });
 
       const gptData = await gptRes.json();
-      let reply = gptData.choices?.[0]?.message?.content || "😉";
+      console.log("GPT Response: ", gptData);
 
-      if (replyCount % 5 === 0) {
-        reply += " (Click video call 👇)";
-      }
-
-      setTimeout(() => {
-        io.to(socket.id).emit('privateMessage', {
-          user: bot.user,
-          text: reply,
-          time: new Date().toLocaleString()
-        });
-      }, 2000 + Math.random() * 3000);
+      // If GPT response is valid, use it
+      reply = gptData.choices?.[0]?.message?.content || reply;
 
     } catch (err) {
       console.error("GPT Error:", err);
     }
+
+    // Add "Click video call" suggestion occasionally
+    if (replyCount % 5 === 0) {
+      reply += " (Click video call 👇)";
+    }
+
+    // Send reply after delay
+    setTimeout(() => {
+      io.to(socket.id).emit('privateMessage', {
+        user: bot.user,
+        text: reply,
+        time: new Date().toLocaleString()
+      });
+    }, 2000 + Math.random() * 3000);
   }
 });
-
-
 
   socket.on('disconnect', () => {
     delete onlineUsers[socket.id];
