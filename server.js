@@ -3,6 +3,7 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const path = require('path');
+const fetch = require('node-fetch');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -11,9 +12,8 @@ app.get('/', (req, res) => {
 });
 
 let onlineUsers = {};
-let botReplyCounter = {}; // Track each bot's replies
+let botReplyCounter = {};
 
-// 40+ bots, mixed naming style
 const botUsers = [
   { id: 'bot1', user: 'Tania Rahman' }, { id: 'bot2', user: 'Ratul' },
   { id: 'bot3', user: 'Priya Sinha' }, { id: 'bot4', user: 'Mehedi Hasan' },
@@ -36,8 +36,10 @@ const botUsers = [
   { id: 'bot37', user: 'Rajiv' }, { id: 'bot38', user: 'Sapna' },
   { id: 'bot39', user: 'Himel' }, { id: 'bot40', user: 'Rehan Ahmed' },
   { id: 'bot41', user: 'Tithi' }, { id: 'bot42', user: 'Joy' },
-  { id: 'bot43', user: 'Sayem Hossain' }, { id: 'bot44', user: 'Meena Khatun' }, { id: 'bot45', user: 'Mota lund' }, { id: 'bot46', user: 'Big Fat Dick' },
-  { id: 'bot47', user: 'Desi boy raju' }, { id: 'bot48', user: 'Horny payel' }, { id: 'bot49', user: 'Rupa dey' }, { id: 'bot50', user: 'Niti dutta' },
+  { id: 'bot43', user: 'Sayem Hossain' }, { id: 'bot44', user: 'Meena Khatun' },
+  { id: 'bot45', user: 'Mota lund' }, { id: 'bot46', user: 'Big Fat Dick' },
+  { id: 'bot47', user: 'Desi boy raju' }, { id: 'bot48', user: 'Horny payel' },
+  { id: 'bot49', user: 'Rupa dey' }, { id: 'bot50', user: 'Niti dutta' }
 ];
 
 const messages = [
@@ -52,26 +54,16 @@ const messages = [
   "Cholo ekta joke boli 🤣", "Tumi ki facebook use koro?",
   "khel ba ?", "Movie dekhecho recently?",
   "Call korbo naki? 😋", "Ami toh ekdom free ekhon",
-  "Sotti, tumi onek bhalo chat partner",
-  "Tumi kon class e poro?", "i am very naughty baby","wana fun with me ? come to video chat now",
-  "Chat korle bhalo lage",
-  "Kew ekta joke sunao 😆",
-  "mujhe xxx movie dekhaoge koi?",
-  "Tumi kotheke chat korcho?",
-  "Mujhe thoda lonely lag raha hai",
-  "Cholo game khela jai 🎮",
-  "Tomar sathe kotha bole bhalo laglo",
-  "wow so many active users today",
-  "video chat pe bohot jyada fun hua",
-  "Facebook use korcho?",
-  "Aibar call e ashbo naki? 😅",
-  "Bujhlam na, ektu bujhao",
-  "Free signup karke video call karo",
-  "free signup button pe click karo then signup karo free mai video call kar payoge",
-  "video call pe ajaw",
-  "hi",
-  "kaha se ho?",
-  "how old are you ?"
+  "Sotti, tumi onek bhalo chat partner", "Tumi kon class e poro?",
+  "i am very naughty baby", "wana fun with me ? come to video chat now",
+  "Chat korle bhalo lage", "Kew ekta joke sunao 😆",
+  "mujhe xxx movie dekhaoge koi?", "Tumi kotheke chat korcho?",
+  "Mujhe thoda lonely lag raha hai", "Cholo game khela jai 🎮",
+  "Tomar sathe kotha bole bhalo laglo", "wow so many active users today",
+  "video chat pe bohot jyada fun hua", "Facebook use korcho?",
+  "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao",
+  "Free signup karke video call karo", "free signup button pe click karo then signup karo free mai video call kar payoge",
+  "video call pe ajaw", "hi", "kaha se ho?", "how old are you ?"
 ];
 
 function getRandomMessage() {
@@ -105,50 +97,50 @@ io.on('connection', (socket) => {
   });
 
   socket.on('privateMessage', async (data) => {
-  io.to(data.to).emit('privateMessage', data);
+    io.to(data.to).emit('privateMessage', data);
 
-  const bot = botUsers.find(b => b.id === data.to);
-  if (bot) {
-  const replyCount = ++botReplyCounter[bot.id];
-  const userMessage = data.text;
+    const bot = botUsers.find(b => b.id === data.to);
+    if (bot) {
+      const replyCount = ++botReplyCounter[bot.id];
+      const userMessage = data.text;
 
-  (async () => {
-    try {
-      const gptResponse = await fetch("https://api.pawan.krd/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer pk-IFvwbrxntjieXssxGQxPLUnZOqvXXMuaFWsyANDhvimfTEZi"
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [
-            { role: "system", content: "You are a fun, flirty, friendly girl chatting casually." },
-            { role: "user", content: userMessage }
-          ]
-        })
-      });
+      (async () => {
+        try {
+          const gptResponse = await fetch("https://api.pawan.krd/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer pk-IFvwbrxntjieXssxGQxPLUnZOqvXXMuaFWsyANDhvimfTEZi"
+            },
+            body: JSON.stringify({
+              model: "gpt-3.5-turbo",
+              messages: [
+                { role: "system", content: "You are a fun, flirty, friendly girl chatting casually." },
+                { role: "user", content: userMessage }
+              ]
+            })
+          });
 
-      const gptData = await gptResponse.json();
-      let reply = gptData.choices?.[0]?.message?.content || "😉";
+          const gptData = await gptResponse.json();
+          let reply = gptData.choices?.[0]?.message?.content || "😉";
 
-      if (replyCount % 5 === 0) {
-        reply += " (Click video call 👇)";
-      }
+          if (replyCount % 5 === 0) {
+            reply += " (Click video call 👇)";
+          }
 
-      setTimeout(() => {
-        io.to(socket.id).emit('privateMessage', {
-          user: bot.user,
-          text: reply,
-          time: new Date().toLocaleString()
-        });
-      }, 2000 + Math.random() * 3000);
-    } catch (err) {
-      console.error("GPT Error:", err);
+          setTimeout(() => {
+            io.to(socket.id).emit('privateMessage', {
+              user: bot.user,
+              text: reply,
+              time: new Date().toLocaleString()
+            });
+          }, 2000 + Math.random() * 3000);
+        } catch (err) {
+          console.error("GPT Error:", err);
+        }
+      })();
     }
-  })();
-}
-
+  });
 
   socket.on('disconnect', () => {
     delete onlineUsers[socket.id];
@@ -157,10 +149,10 @@ io.on('connection', (socket) => {
 });
 
 function botRandomMessageLoop() {
-  const delay = Math.floor(Math.random() * 8000) + 2000; // 2s to 10s
+  const delay = Math.floor(Math.random() * 8000) + 2000;
 
   setTimeout(() => {
-    const botCount = Math.floor(Math.random() * 3) + 1; // 1 to 3 bots will reply
+    const botCount = Math.floor(Math.random() * 3) + 1;
     for (let i = 0; i < botCount; i++) {
       const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
       const message = {
@@ -172,11 +164,10 @@ function botRandomMessageLoop() {
       io.emit('message', message);
     }
 
-    botRandomMessageLoop(); // recursive call for next round
+    botRandomMessageLoop();
   }, delay);
 }
 
-// Start the random bot loop
 botRandomMessageLoop();
 
 const PORT = process.env.PORT || 3000;
