@@ -117,7 +117,7 @@ socket.on('privateMessage', async (data) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer YOUR_API_KEY" // <-- Replace with your real key
+          "Authorization": "Bearer pk-IFvwbrxntjieXssxGQxPLUnZOqvXXMuaFWsyANDhvimfTEZi" // <-- Replace with your real key
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo",
