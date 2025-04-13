@@ -684,6 +684,12 @@
       adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
     });
   </script>
-  
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    telegaAdsSdk.init({
+      containerSelector: '[data-telega-ad]',  // important to match your div selector
+    });
+  });
+</script>
 </body>
 </html>
