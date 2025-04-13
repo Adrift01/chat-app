@@ -500,10 +500,7 @@
         <button onclick="sendPrivate()">Send Private</button>
       </div>
     </div>
-
-    <div id="rightSidebar">
-    <div id="telega-ad-container"></div>
-      <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
+<script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
 <script>
   const ads = window.TelegaIn.AdsController.create_miniapp({
     token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
@@ -515,6 +512,9 @@
     container: "telega-ad-container"
   });
 </script>
+    <div id="rightSidebar">
+    <div id="telega-ad-container"></div>
+      
   
       <div class="sidebarScrollingNote">
   <div class="sidebarScrollText">🎬 Fresh videos added daily — Free to download! Don’t miss out!</div>
