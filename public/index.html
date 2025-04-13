@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
   <meta charset="UTF-8" />
   <title>Free Random Video chat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -512,6 +513,7 @@
         <button onclick="window.open('https://1024terabox.com/s/1AAoYRRmDgHK8ecmI0z6fOw', '_blank')">Hot Webseries</button>
         <button onclick="window.open('https://1024terabox.com/s/160hE5mIU_IuIMt6QpFDURw', '_blank')">Real Collection</button>
       </div>
+      <div id="telega-ads-container"></div>
     </div>
   </div>
 
@@ -673,7 +675,7 @@
     button.style.boxShadow = "0 0 10px rgba(255, 105, 180, 0.5)";
   };
 </script>
-  <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
+  
 <script>
   const ads = window.TelegaIn.AdsController.create_miniapp({
     token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
