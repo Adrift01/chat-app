@@ -502,11 +502,21 @@
     </div>
 
     <div id="rightSidebar">
-     <div id="telega-ad-container" style="min-height: 200px;"></div>
-    <div id="telega-ad-container"></div>
-  </div>
+    <div id="telega-ad-container">
+       <script src="https://inapp.telega.io/sdk/v1/sdk.js" onload="initAd()"></script>
 
-
+<script>
+  function initAd() {
+    if (window.ads && typeof ads.ad_show === 'function') {
+      ads.ad_show({
+        adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
+      });
+    } else {
+      console.error('ads object not found!');
+    }
+  }
+</script> 
+    </div>
       <div class="sidebarScrollingNote">
   <div class="sidebarScrollText">🎬 Fresh videos added daily — Free to download! Don’t miss out!</div>
 </div>
@@ -685,19 +695,13 @@
     token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
 </script>
 
-  <script src="https://inapp.telega.io/sdk/v1/sdk.js" onload="initAd()"></script>
-
+ 
 <script>
-  function initAd() {
-    if (window.ads && typeof ads.ad_show === 'function') {
-      ads.ad_show({
-        adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
-      });
-    } else {
-      console.error('ads object not found!');
-    }
-  }
+  document.addEventListener("DOMContentLoaded", function () {
+    telegaAdsSdk.init({
+      containerSelector: '[data-telega-ad]',  // important to match your div selector
+    });
+  });
 </script>
-
 </body>
 </html>
