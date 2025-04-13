@@ -684,12 +684,20 @@
   const ads = window.TelegaIn.AdsController.create_miniapp({
     token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
 </script>
-  <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
-  <script>
-  ads.ad_show({
-    adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
-    container: "telega-ad-container"
-  });
+
+  <script src="https://inapp.telega.io/sdk/v1/sdk.js" onload="initAd()"></script>
+
+<script>
+  function initAd() {
+    if (window.ads && typeof ads.ad_show === 'function') {
+      ads.ad_show({
+        adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
+      });
+    } else {
+      console.error('ads object not found!');
+    }
+  }
 </script>
+
 </body>
 </html>
