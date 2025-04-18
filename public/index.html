@@ -495,7 +495,18 @@
         <h3 id="privateTitle"></h3>
         <div id="privateMessages"></div>
         <input id="privateMsg" placeholder="Type private message..." />
-        <button onclick="sendPrivate()">Send Private</button>
+        <button onclick="
+    // Rewarded Popup
+
+show_9229076('pop').then(() => {
+    sendPrivate()
+    // your code to reward user for rewarded format
+}).catch(e => {
+    // user get error during playing ad
+    // do nothing or whatever you want
+})
+
+        ">Send Private</button>
       </div>
     </div>
     
