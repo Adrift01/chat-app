@@ -461,7 +461,18 @@
       <input type="text" id="username" placeholder="Enter your name" />
       <input type="file" id="picInput" accept="image/*" />
       <img id="preview" src="#" />
-      <button onclick="startChat()">Start Chat</button>
+      <button onclick="
+    // Rewarded Popup
+
+show_9229076('pop').then(() => {
+    // user watch ad till the end or close it in interstitial format
+    startChat()
+}).catch(e => {
+    // user get error during playing ad
+    // do nothing or whatever you want
+})
+
+        ">Start Chat</button>
     </div>
   </div>
 
