@@ -521,21 +521,19 @@
 
       <div id="videoCollection">
         <h4>Real 18+ Video Collections</h4>
-        <button onclick="window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')">New Collection</button>
+        <button onclick=" <script>
+  
+    // Rewarded interstitial
+        
+show_9229076().then(() => { window.open('https://1024terabox.com/s/12lmjTvhVswM7eZZg4q5AxA', '_blank')
+    // You need to add your user reward function here, which will be executed after the user watches the ad.
+    // For more details, please refer to the detailed instructions.
+    alert('You have seen an ad!');
+})</script>">New Collection</button>
         <button onclick="window.open('https://1024terabox.com/s/1AAoYRRmDgHK8ecmI0z6fOw', '_blank')">Hot Webseries</button>
         <button onclick="window.open('https://1024terabox.com/s/160hE5mIU_IuIMt6QpFDURw', '_blank')">Real Collection</button>
       </div>
-      <script>
-  function showAdThenRedirect(link) {
-    show_9229076().then(() => {
-      // Ad seen, now open the link
-      window.open(link, '_blank');
-    }).catch((err) => {
-      console.error('Ad failed or was skipped:', err);
-      alert('Please watch the full ad to continue.');
-    });
-  }
-</script>
+     
       <div id="telega-ad-container"></div>
     </div>
   </div>
