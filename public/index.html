@@ -479,8 +479,8 @@
   <div class="scrolling-text">
     <span>🔥 You need to share with 2 telegram friends to start video chat🎥 , click below button to share</span>
   </div>
-          <a href="https://t.me/share/url?url=https://t.me/BabyMonika_Bot/RandomVideochat&text=🔥 Hey come here and start random video chat all over the telegram!" class="cta-button" target="_blank" id="shareBtn">
-    👀 Share now 0/2
+          <a href="https://t.me/share/url?url=https://t.me/BabyMonika_Bot/RandomVideochat&text=🔥 Hey come here and start random video chat all over the telegram!" class="cta-button" target="_blank">
+    👀 Clcik to Share
   </a>
 </div>
         <div id="messages"></div>
@@ -689,29 +689,6 @@ show_9229076('pop').then(() => {
       }
     });
   </script>
-  <script>
-  // Step 1: Catch the click
-  const shareLink = document.getElementById('shareBtn');
-
-  shareLink.addEventListener('click', function (e) {
-    e.preventDefault(); // Prevent direct navigation
-
-    // Step 2: Show rewarded ad first
-    show_9229076().then(() => {
-      alert('✅ Now opening Telegram.');
-
-      // Step 3: Open Telegram link manually after ad
-      window.open(this.href, '_blank');
-    });
-  });
-
-  // This is your ad function — replace this with real ad logic
-  function show_9229076() {
-    return new Promise((resolve) => {
-      setTimeout(resolve, 3000); // Simulates a 3-second ad
-    });
-  }
-</script>
   <script>
   function updateOnlineCount() {
     const min = 5000;
