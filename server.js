@@ -3,7 +3,6 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const path = require('path');
-const fetch = require('node-fetch');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -24,22 +23,7 @@ const botUsers = [
   { id: 'bot13', user: 'Ankita Das' }, { id: 'bot14', user: 'Farhan Akhtar' },
   { id: 'bot15', user: 'Nisha' }, { id: 'bot16', user: 'Arjun' },
   { id: 'bot17', user: 'Preeti Sharma' }, { id: 'bot18', user: 'Deepak' },
-  { id: 'bot19', user: 'Kriti Sanon' }, { id: 'bot20', user: 'Zaid' },
-  { id: 'bot21', user: 'Ananya' }, { id: 'bot22', user: 'Junaid Alam' },
-  { id: 'bot23', user: 'Ishita' }, { id: 'bot24', user: 'Nabil' },
-  { id: 'bot25', user: 'Rakesh' }, { id: 'bot26', user: 'Trisha' },
-  { id: 'bot27', user: 'Madhurima' }, { id: 'bot28', user: 'Ramesh' },
-  { id: 'bot29', user: 'Nusrat' }, { id: 'bot30', user: 'Hasib Uddin' },
-  { id: 'bot31', user: 'Tanmay' }, { id: 'bot32', user: 'Zoya Khan' },
-  { id: 'bot33', user: 'Avni' }, { id: 'bot34', user: 'Rituparna' },
-  { id: 'bot35', user: 'Pritam Roy' }, { id: 'bot36', user: 'Alina' },
-  { id: 'bot37', user: 'Rajiv' }, { id: 'bot38', user: 'Sapna' },
-  { id: 'bot39', user: 'Himel' }, { id: 'bot40', user: 'Rehan Ahmed' },
-  { id: 'bot41', user: 'Tithi' }, { id: 'bot42', user: 'Joy' },
-  { id: 'bot43', user: 'Sayem Hossain' }, { id: 'bot44', user: 'Meena Khatun' },
-  { id: 'bot45', user: 'Mota lund' }, { id: 'bot46', user: 'Big Fat Dick' },
-  { id: 'bot47', user: 'Desi boy raju' }, { id: 'bot48', user: 'Horny payel' },
-  { id: 'bot49', user: 'Rupa dey' }, { id: 'bot50', user: 'Niti dutta' }
+  { id: 'bot19', user: 'Kriti Sanon' }, { id: 'bot20', user: 'Zaid' }
 ];
 
 const messages = [
@@ -70,7 +54,6 @@ function getRandomMessage() {
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
-// Add bots to onlineUsers and set counter
 botUsers.forEach(bot => {
   onlineUsers[bot.id] = {
     id: bot.id,
@@ -96,49 +79,25 @@ io.on('connection', (socket) => {
     io.emit('message', data);
   });
 
-  socket.on('privateMessage', async (data) => {
+  socket.on('privateMessage', (data) => {
     io.to(data.to).emit('privateMessage', data);
 
     const bot = botUsers.find(b => b.id === data.to);
     if (bot) {
       const replyCount = ++botReplyCounter[bot.id];
-      const userMessage = data.text;
+      let reply = getRandomMessage();
 
-      (async () => {
-        try {
-          const gptResponse = await fetch("https://api.pawan.krd/v1/chat/completions", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": "Bearer pk-IFvwbrxntjieXssxGQxPLUnZOqvXXMuaFWsyANDhvimfTEZi"
-            },
-            body: JSON.stringify({
-              model: "gpt-3.5-turbo",
-              messages: [
-                { role: "system", content: "You are a fun, flirty, friendly girl chatting casually." },
-                { role: "user", content: userMessage }
-              ]
-            })
-          });
+      if (replyCount % 5 === 0) {
+        reply += " (start video chat ?)";
+      }
 
-          const gptData = await gptResponse.json();
-          let reply = gptData.choices?.[0]?.message?.content || "😉";
-
-          if (replyCount % 5 === 0) {
-            reply += " (Click video call 👇)";
-          }
-
-          setTimeout(() => {
-            io.to(socket.id).emit('privateMessage', {
-              user: bot.user,
-              text: reply,
-              time: new Date().toLocaleString()
-            });
-          }, 2000 + Math.random() * 3000);
-        } catch (err) {
-          console.error("GPT Error:", err);
-        }
-      })();
+      setTimeout(() => {
+        io.to(socket.id).emit('privateMessage', {
+          user: bot.user,
+          text: reply,
+          time: new Date().toLocaleString()
+        });
+      }, 2000 + Math.random() * 3000);
     }
   });
 
@@ -147,28 +106,6 @@ io.on('connection', (socket) => {
     io.emit('onlineUsers', Object.values(onlineUsers));
   });
 });
-
-function botRandomMessageLoop() {
-  const delay = Math.floor(Math.random() * 8000) + 2000;
-
-  setTimeout(() => {
-    const botCount = Math.floor(Math.random() * 3) + 1;
-    for (let i = 0; i < botCount; i++) {
-      const bot = botUsers[Math.floor(Math.random() * botUsers.length)];
-      const message = {
-        user: bot.user,
-        pic: bot.pic,
-        text: getRandomMessage(),
-        time: new Date().toLocaleString()
-      };
-      io.emit('message', message);
-    }
-
-    botRandomMessageLoop();
-  }, delay);
-}
-
-botRandomMessageLoop();
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
