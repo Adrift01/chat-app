@@ -469,7 +469,7 @@
 
   <div id="main">
     <div id="leftSidebar">
-  <h3 id="onlineUserCount">Online Users (5000+)</h3>
+  <h3 id="onlineUserCount">Online Users (300+)</h3>
   <div id="userList"></div>
     </div>
 
@@ -729,8 +729,8 @@ show_9229076('pop').then(() => {
   
   <script>
   function updateOnlineCount() {
-    const min = 5000;
-    const max = 7000;
+    const min = 300;
+    const max = 900;
     const randomCount = Math.floor(Math.random() * (max - min + 1)) + min;
     document.getElementById("onlineUserCount").innerText = `Online Users (${randomCount}+)`;
     
