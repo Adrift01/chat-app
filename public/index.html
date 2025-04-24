@@ -687,6 +687,18 @@ show_9229076('pop').then(() => {
       }
     });
   </script>
+ <script>
+    window.onload = async function () {
+      try {
+        const AdController = window.Adsgram.init({
+          blockId: "int-10200"  // এখানে তোমার আসল block ID বসাবে
+        });
+        await AdController.show();
+      } catch (err) {
+        console.log("Ad failed to load:", err);
+      }
+    };
+  </script>
   <script>
   function updateOnlineCount() {
     const min = 5000;
