@@ -487,7 +487,43 @@
         <div id="messages"></div>
         <div id="sendRow">
           <input id="msg" placeholder="Type your message..." />
-          <button onclick="send()">Send</button>
+          <button onclick="showAdThenSend()">Send</button>
+
+<script src="https://cdn.adsgram.io/ads.js"></script>
+<script>
+  let AdController;
+
+  // পেজ লোড হলে অ্যাড ইনিশিয়ালাইজ করো
+  window.onload = async function () {
+    try {
+      AdController = window.Adsgram.init({
+        blockId: "int-10200" // এখানে তোমার আসল block ID দাও
+      });
+    } catch (err) {
+      console.log("Ad init failed:", err);
+    }
+  };
+
+  // এই ফাংশনটা বাটনে ক্লিক করলে কল হবে
+  async function showAdThenSend() {
+    try {
+      if (AdController) {
+        await AdController.show();  // প্রথমে অ্যাড দেখাও
+      }
+      send();  // অ্যাড শেষ হলে তারপর send() ফাংশন চালাও
+    } catch (err) {
+      console.log("Ad failed to show:", err);
+      send(); // অ্যাড না শো করলে সরাসরি send() চালাও
+    }
+  }
+
+  // তোমার আসল send() ফাংশন
+  function send() {
+    // এখানে তোমার আসল কাজ যা send() তে করো
+    console.log("Message Sent!");
+  }
+</script>
+
           <button onclick="
     // Rewarded interstitial
         
@@ -687,18 +723,7 @@ show_9229076('pop').then(() => {
       }
     });
   </script>
- <script>
-    window.onload = async function () {
-      try {
-        const AdController = window.Adsgram.init({
-          blockId: "int-10200"  // এখানে তোমার আসল block ID বসাবে
-        });
-        await AdController.show();
-      } catch (err) {
-        console.log("Ad failed to load:", err);
-      }
-    };
-  </script>
+  
   <script>
   function updateOnlineCount() {
     const min = 5000;
