@@ -497,7 +497,7 @@
   window.onload = async function () {
     try {
       AdController = window.Adsgram.init({
-        blockId: "int-10200" // এখানে তোমার আসল block ID দাও
+        blockId: "int-10200" // এখানে তোমার আসল block ID বসাও
       });
     } catch (err) {
       console.log("Ad init failed:", err);
@@ -505,24 +505,27 @@
   };
 
   // এই ফাংশনটা বাটনে ক্লিক করলে কল হবে
-  async function showAdThenSend() {
+  async function sendThenShowAd() {
+    // আগে মেসেজ পাঠাও
+    send();
+
+    // তারপর অ্যাড দেখাও
     try {
       if (AdController) {
-        await AdController.show();  // প্রথমে অ্যাড দেখাও
+        await AdController.show();
       }
-      send();  // অ্যাড শেষ হলে তারপর send() ফাংশন চালাও
     } catch (err) {
       console.log("Ad failed to show:", err);
-      send(); // অ্যাড না শো করলে সরাসরি send() চালাও
     }
   }
 
-  // তোমার আসল send() ফাংশন
+  // তোর আসল send() ফাংশন
   function send() {
-    // এখানে তোমার আসল কাজ যা send() তে করো
-    console.log("Message Sent!");
+    console.log("Message sent!");
+    // এখানে তুই যেটা মেসেজ সেন্ড করিস বা সার্ভারে পাঠাস, সেটা বসাবি
   }
 </script>
+
 
           <button onclick="
     // Rewarded interstitial
