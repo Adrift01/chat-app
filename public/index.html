@@ -135,7 +135,43 @@
     flex-direction: column;
     align-items: center;
   }
+/* Updated Video Collection Styles */
+  #videoCollection1 {
+    background: #1a1a1a;
+    padding: 20px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.2);
+  }
 
+  #videoCollection1 h3 {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #FFA500;
+    margin-bottom: 15px;
+  }
+
+  #videoCollection1 button {
+    background-color: #FFA500;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  #videoCollection1 button:hover {
+    background-color: #FF4500;
+    transform: scale(1.03);
+  }
   /* Updated Video Collection Styles */
   #videoCollection {
     background: #1a1a1a;
@@ -589,7 +625,13 @@ show_9229076('pop').then(() => {
     alert('You have seen an ad!');
 })">Real Collection</button>
       </div>
-     
+      <div class="sidebarScrollingNote">
+  <div class="sidebarScrollText">Signup with gmail to get random video call</div>
+</div>
+     <div id="videoCollection1">
+        <button onclick="window.open('https://www.febspot.com/ref/725136', '_blank')
+    ">Random video call</button>
+   </div>
       <div id="telega-ad-container"></div>
     </div>
   </div>
