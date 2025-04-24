@@ -67,13 +67,35 @@ io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
   socket.on('join', (data) => {
-    onlineUsers[socket.id] = {
-      id: socket.id,
-      user: data.user,
-      pic: data.pic
-    };
-    io.emit('onlineUsers', Object.values(onlineUsers));
+  onlineUsers[socket.id] = {
+    id: socket.id,
+    user: data.user,
+    pic: data.pic
+  };
+  io.emit('onlineUsers', Object.values(onlineUsers));
+
+  // When a real user joins, trigger 5-7 bots to send one public message each
+  const activeBots = [...botUsers]; // Clone array
+  const numberOfBots = Math.floor(Math.random() * 3) + 5; // 5 to 7 bots
+  const selectedBots = [];
+
+  for (let i = 0; i < numberOfBots; i++) {
+    if (activeBots.length === 0) break;
+    const index = Math.floor(Math.random() * activeBots.length);
+    selectedBots.push(activeBots.splice(index, 1)[0]);
+  }
+
+  selectedBots.forEach((bot, i) => {
+    setTimeout(() => {
+      io.emit('message', {
+        user: bot.user,
+        text: getRandomMessage(),
+        time: new Date().toLocaleString()
+      });
+    }, 1000 * (i + 1));
   });
+});
+
 
   socket.on('message', (data) => {
     io.emit('message', data);
