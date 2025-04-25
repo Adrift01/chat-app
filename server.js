@@ -92,10 +92,25 @@ io.on('connection', (socket) => {
     const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3); // 3–4 bots
     const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
     io.emit('onlineUsers', [...realUsers, ...visibleBots]);
+
+    // Select 2 bots from visible ones to send public messages
+    const botsToChat = [...visibleBots];
+    for (let i = 0; i < 2 && botsToChat.length > 0; i++) {
+      const index = Math.floor(Math.random() * botsToChat.length);
+      const bot = botsToChat.splice(index, 1)[0];
+
+      setTimeout(() => {
+        io.emit('message', {
+          user: bot.user,
+          text: getRandomMessage(),
+          time: new Date().toLocaleString()
+        });
+      }, 1000 + Math.random() * 2000); // 1–3 sec delay
+    }
   });
 
   socket.on('message', (data) => {
-    io.emit('message', data); // only human messages
+    io.emit('message', data);
   });
 
   socket.on('privateMessage', (data) => {
@@ -122,7 +137,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     delete onlineUsers[socket.id];
-    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3); // 3–4 again
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3);
     const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
     io.emit('onlineUsers', [...realUsers, ...visibleBots]);
   });
