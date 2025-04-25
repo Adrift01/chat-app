@@ -54,6 +54,22 @@ function getRandomMessage() {
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
+function getRandomVisibleBots(count = 3) {
+  const botsCopy = [...botUsers];
+  const selected = [];
+  while (selected.length < count && botsCopy.length > 0) {
+    const i = Math.floor(Math.random() * botsCopy.length);
+    selected.push({
+      id: botsCopy[i].id,
+      user: botsCopy[i].user,
+      pic: ''
+    });
+    botsCopy.splice(i, 1);
+  }
+  return selected;
+}
+
+// Always-online bot setup
 botUsers.forEach(bot => {
   onlineUsers[bot.id] = {
     id: bot.id,
@@ -67,38 +83,19 @@ io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
   socket.on('join', (data) => {
-  onlineUsers[socket.id] = {
-    id: socket.id,
-    user: data.user,
-    pic: data.pic
-  };
-  io.emit('onlineUsers', Object.values(onlineUsers));
+    onlineUsers[socket.id] = {
+      id: socket.id,
+      user: data.user,
+      pic: data.pic
+    };
 
-  // When a real user joins, trigger 5-7 bots to send one public message each
-  const activeBots = [...botUsers]; // Clone array
-  const numberOfBots = Math.floor(Math.random() * 3) + 5; // 5 to 7 bots
-  const selectedBots = [];
-
-  for (let i = 0; i < numberOfBots; i++) {
-    if (activeBots.length === 0) break;
-    const index = Math.floor(Math.random() * activeBots.length);
-    selectedBots.push(activeBots.splice(index, 1)[0]);
-  }
-
-  selectedBots.forEach((bot, i) => {
-    setTimeout(() => {
-      io.emit('message', {
-        user: bot.user,
-        text: getRandomMessage(),
-        time: new Date().toLocaleString()
-      });
-    }, 1000 * (i + 1));
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3); // 3–4 bots
+    const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
+    io.emit('onlineUsers', [...realUsers, ...visibleBots]);
   });
-});
-
 
   socket.on('message', (data) => {
-    io.emit('message', data);
+    io.emit('message', data); // only human messages
   });
 
   socket.on('privateMessage', (data) => {
@@ -125,7 +122,9 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     delete onlineUsers[socket.id];
-    io.emit('onlineUsers', Object.values(onlineUsers));
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3); // 3–4 again
+    const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
+    io.emit('onlineUsers', [...realUsers, ...visibleBots]);
   });
 });
 
