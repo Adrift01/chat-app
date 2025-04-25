@@ -12,7 +12,6 @@ app.get('/', (req, res) => {
 
 let onlineUsers = {};
 let botReplyCounter = {};
-let publicMessages = [];  // Store public messages
 
 const botUsers = [
   { id: 'bot1', user: 'Tania Rahman' }, { id: 'bot2', user: 'Ratul' },
@@ -28,26 +27,26 @@ const botUsers = [
 ];
 
 const messages = [
-  "Hi there", "Kya haal hai?", "i wana fun with you baby come to video call now i am alone", "What's going on?",
+  "Hi there!", "Kya haal hai?", "i wana fun with you baby come to video call now i am alone", "What's going on?",
   "Koi hya jo video call pe ayega abhi?", "Bore lagche tai chat e eshechi",
   "Let's play a game!", "Tomake dekhte bhalo lagche 😅",
   "Arey baap re eto active log!", "Video chat try korle bhalo lage",
   "Ajke toh sobai onek active!", "Tum kahaan se ho?",
-  "Tui kon theke chat korchis?", "Vije ase amar ta thela dilei dhuke jabe",
+  "Tui kon theke chat korchis?", "Ektu coffee kheye ashi ☕",
   "Let's be friends!", "Free signup diye chat korte paro 😄",
   "Emon kono din chat e ashi na 😆", "Nice talking to you!",
   "Cholo ekta joke boli 🤣", "Tumi ki facebook use koro?",
-  "khel ba ?", "Any one from dhaka?",
+  "khel ba ?", "Movie dekhecho recently?",
   "Call korbo naki? 😋", "Ami toh ekdom free ekhon",
   "Sotti, tumi onek bhalo chat partner", "Tumi kon class e poro?",
   "i am very naughty baby", "wana fun with me ? come to video chat now",
   "Chat korle bhalo lage", "Kew ekta joke sunao 😆",
   "mujhe xxx movie dekhaoge koi?", "Tumi kotheke chat korcho?",
-  "Mujhe thoda lonely lag raha hai", "Bangladeshi kaw acho naki?",
+  "Mujhe thoda lonely lag raha hai", "Cholo game khela jai 🎮",
   "Tomar sathe kotha bole bhalo laglo", "wow so many active users today",
-  "video chat pe bohot jyada fun hua", "Akhane video chat korte parchi na tmr whatsapp number daw",
+  "video chat pe bohot jyada fun hua", "Facebook use korcho?",
   "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao",
-  "Tmr telegram id ki bolo ami call dissi", "koi hai kya jo masti k mood mai ho?",
+  "Free signup karke video call karo", "free signup button pe click karo then signup karo free mai video call kar payoge",
   "video call pe ajaw", "hi", "kaha se ho?", "how old are you ?"
 ];
 
@@ -55,7 +54,6 @@ function getRandomMessage() {
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
-// Initialize bots and users
 botUsers.forEach(bot => {
   onlineUsers[bot.id] = {
     id: bot.id,
@@ -69,52 +67,40 @@ io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
   socket.on('join', (data) => {
-    onlineUsers[socket.id] = {
-      id: socket.id,
-      user: data.user,
-      pic: data.pic
-    };
-    io.emit('onlineUsers', Object.values(onlineUsers));
+  onlineUsers[socket.id] = {
+    id: socket.id,
+    user: data.user,
+    pic: data.pic
+  };
+  io.emit('onlineUsers', Object.values(onlineUsers));
 
-    // Send previous public messages to the user joining
-    socket.emit('publicMessages', publicMessages); // Send public message history
+  // When a real user joins, trigger 5-7 bots to send one public message each
+  const activeBots = [...botUsers]; // Clone array
+  const numberOfBots = Math.floor(Math.random() * 3) + 5; // 5 to 7 bots
+  const selectedBots = [];
 
-    // When a real user joins, trigger 5-7 bots to send one public message each
-    const activeBots = [...botUsers]; // Clone array
-    const numberOfBots = Math.floor(Math.random() * 3) + 5; // 5 to 7 bots
-    const selectedBots = [];
+  for (let i = 0; i < numberOfBots; i++) {
+    if (activeBots.length === 0) break;
+    const index = Math.floor(Math.random() * activeBots.length);
+    selectedBots.push(activeBots.splice(index, 1)[0]);
+  }
 
-    for (let i = 0; i < numberOfBots; i++) {
-      if (activeBots.length === 0) break;
-      const index = Math.floor(Math.random() * activeBots.length);
-      selectedBots.push(activeBots.splice(index, 1)[0]);
-    }
-
-    selectedBots.forEach((bot, i) => {
-      setTimeout(() => {
-        const message = {
-          user: bot.user,
-          text: getRandomMessage(),
-          time: new Date().toLocaleString()
-        };
-        publicMessages.push(message);  // Store the message in history
-        io.emit('message', message);  // Emit message to all clients
-      }, 1000 * (i + 1));
-    });
+  selectedBots.forEach((bot, i) => {
+    setTimeout(() => {
+      io.emit('message', {
+        user: bot.user,
+        text: getRandomMessage(),
+        time: new Date().toLocaleString()
+      });
+    }, 1000 * (i + 1));
   });
+});
 
-  // Handle incoming public messages
+
   socket.on('message', (data) => {
-    const message = {
-      user: data.user,
-      text: data.text,
-      time: new Date().toLocaleString()
-    };
-    publicMessages.push(message);  // Add message to public history
-    io.emit('message', message);  // Broadcast message to all clients
+    io.emit('message', data);
   });
 
-  // Handle private messages
   socket.on('privateMessage', (data) => {
     io.to(data.to).emit('privateMessage', data);
 
@@ -145,5 +131,5 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+  console.log(Server running on http://localhost:${PORT});
+}); 
