@@ -53,7 +53,7 @@ function getRandomMessage() {
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
-function getRandomVisibleBots(count = 3) {
+function getRandomVisibleBots(count) {
   const botsCopy = [...botUsers];
   const selected = [];
   while (selected.length < count && botsCopy.length > 0) {
@@ -140,7 +140,8 @@ io.on('connection', (socket) => {
 
   function updateOnlineUsers() {
     const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
-    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3);
+    const visibleBotCount = Math.floor(Math.random() * 4) + 10; // 10 to 13 bots
+    const visibleBots = getRandomVisibleBots(visibleBotCount);
     io.emit('onlineUsers', [...realUsers, ...visibleBots]);
   }
 });
