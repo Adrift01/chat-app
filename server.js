@@ -16,7 +16,7 @@ let botReplyCounter = {};
 const botUsers = [
   { id: 'bot1', user: 'Tania Rahman' }, { id: 'bot2', user: 'Ratul' },
   { id: 'bot3', user: 'Priya khan' }, { id: 'bot4', user: 'Mehedi Hasan' },
-  { id: 'bot5', user: 'Riya' }, { id: 'bot6', user: 'Rohit Sharma' },
+  { id: 'bot5', user: 'Riya' }, { id: 'bot6', user: 'Rohit' },
   { id: 'bot7', user: 'Sneha' }, { id: 'bot8', user: 'Karan Singh' },
   { id: 'bot9', user: 'Neha Kumari' }, { id: 'bot10', user: 'daisy' },
   { id: 'bot11', user: 'Simran' }, { id: 'bot12', user: 'Sumi' },
