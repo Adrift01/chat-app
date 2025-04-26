@@ -53,7 +53,7 @@ function getRandomMessage() {
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
-function getRandomVisibleBots(count = 3) {
+function getRandomBots(count) {
   const botsCopy = [...botUsers];
   const selected = [];
   while (selected.length < count && botsCopy.length > 0) {
@@ -68,7 +68,7 @@ function getRandomVisibleBots(count = 3) {
   return selected;
 }
 
-// Always-online bot setup
+// Always-online bots setup
 botUsers.forEach(bot => {
   onlineUsers[bot.id] = {
     id: bot.id,
@@ -88,8 +88,10 @@ io.on('connection', (socket) => {
       pic: data.pic
     };
 
-    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3); // 3–4 bots
     const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
+    const botCount = Math.floor((realUsers.length / 100) * 60); // 60% of real users
+    const visibleBots = getRandomBots(botCount);
+
     io.emit('onlineUsers', [...realUsers, ...visibleBots]);
 
     // Select 2 bots from visible ones to send public messages
@@ -136,8 +138,10 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     delete onlineUsers[socket.id];
-    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3);
     const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
+    const botCount = Math.floor((realUsers.length / 100) * 60);
+    const visibleBots = getRandomBots(botCount);
+
     io.emit('onlineUsers', [...realUsers, ...visibleBots]);
   });
 });
