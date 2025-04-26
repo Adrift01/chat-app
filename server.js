@@ -15,38 +15,37 @@ let botReplyCounter = {};
 
 const botUsers = [
   { id: 'bot1', user: 'Tania Rahman' }, { id: 'bot2', user: 'Ratul' },
-  { id: 'bot3', user: 'Priya Sinha' }, { id: 'bot4', user: 'Mehedi Hasan' },
+  { id: 'bot3', user: 'Priya khan' }, { id: 'bot4', user: 'Mehedi Hasan' },
   { id: 'bot5', user: 'Riya' }, { id: 'bot6', user: 'Rohit Sharma' },
   { id: 'bot7', user: 'Sneha' }, { id: 'bot8', user: 'Karan Singh' },
-  { id: 'bot9', user: 'Neha Kumari' }, { id: 'bot10', user: 'Amit' },
-  { id: 'bot11', user: 'Simran' }, { id: 'bot12', user: 'Sourav Pal' },
-  { id: 'bot13', user: 'Ankita Das' }, { id: 'bot14', user: 'Farhan Akhtar' },
+  { id: 'bot9', user: 'Neha Kumari' }, { id: 'bot10', user: 'daisy' },
+  { id: 'bot11', user: 'Simran' }, { id: 'bot12', user: 'Sumi' },
+  { id: 'bot13', user: 'Ankita Das' }, { id: 'bot14', user: 'Faria' },
   { id: 'bot15', user: 'Nisha' }, { id: 'bot16', user: 'Arjun' },
   { id: 'bot17', user: 'Preeti Sharma' }, { id: 'bot18', user: 'Deepak' },
-  { id: 'bot19', user: 'Kriti Sanon' }, { id: 'bot20', user: 'Zaid' }
+  { id: 'bot19', user: 'Kriti ' }, { id: 'bot20', user: 'Shammi' }
 ];
 
 const messages = [
-  "Hi there!", "Kya haal hai?", "i wana fun with you baby come to video call now i am alone", "What's going on?",
+  "Hi there!", "Kya haal hai?", "i wana fun with you baby come to video call now i am alone", "amn kaw acho club a jaba amr sathe?",
   "Koi hya jo video call pe ayega abhi?", "Bore lagche tai chat e eshechi",
-  "Let's play a game!", "Tomake dekhte bhalo lagche 😅",
+  "uff amar ta vije ache thela dilei dhuke jabe baby", "Tomake dekhte bhalo lagche 😅",
   "Arey baap re eto active log!", "Video chat try korle bhalo lage",
   "Ajke toh sobai onek active!", "Tum kahaan se ho?",
-  "Tui kon theke chat korchis?", "Ektu coffee kheye ashi ☕",
-  "Let's be friends!", "Free signup diye chat korte paro 😄",
+  "Kaw acho j amak thanda kore dite parba","Hi Tumi ki korba amar sathe tmr id ta daw", "Free signup diye chat korte paro 😄",
   "Emon kono din chat e ashi na 😆", "Nice talking to you!",
   "Cholo ekta joke boli 🤣", "Tumi ki facebook use koro?",
-  "khel ba ?", "Movie dekhecho recently?",
+  "khel ba ?", "Tumi ki bangladeshi?",
   "Call korbo naki? 😋", "Ami toh ekdom free ekhon",
-  "Sotti, tumi onek bhalo chat partner", "Tumi kon class e poro?",
+  "Sotti, tumi onek bhalo chat partner", "Dhaka te thako amn kaw acho?",
   "i am very naughty baby", "wana fun with me ? come to video chat now",
-  "Chat korle bhalo lage", "Kew ekta joke sunao 😆",
-  "mujhe xxx movie dekhaoge koi?", "Tumi kotheke chat korcho?",
-  "Mujhe thoda lonely lag raha hai", "Cholo game khela jai 🎮",
+  "Chat korle bhalo lage", "hey",
+  "mujhe xxx movie dekhaoge koi?", "free hoile inbox koro",
+  "Mujhe thoda lonely lag raha hai",
   "Tomar sathe kotha bole bhalo laglo", "wow so many active users today",
   "video chat pe bohot jyada fun hua", "Facebook use korcho?",
   "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao",
-  "Free signup karke video call karo", "free signup button pe click karo then signup karo free mai video call kar payoge",
+  "Free signup karke video call karo",
   "video call pe ajaw", "hi", "kaha se ho?", "how old are you ?"
 ];
 
