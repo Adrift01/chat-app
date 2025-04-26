@@ -23,7 +23,7 @@ const botUsers = [
   { id: 'bot13', user: 'Ankita Das' }, { id: 'bot14', user: 'Faria' },
   { id: 'bot15', user: 'Nisha' }, { id: 'bot16', user: 'Arjun' },
   { id: 'bot17', user: 'Preeti Sharma' }, { id: 'bot18', user: 'Deepak' },
-  { id: 'bot19', user: 'Kriti ' }, { id: 'bot20', user: 'Shammi' }
+  { id: 'bot19', user: 'Kriti' }, { id: 'bot20', user: 'Shammi' }
 ];
 
 const messages = [
@@ -32,7 +32,7 @@ const messages = [
   "uff amar ta vije ache thela dilei dhuke jabe baby", "Tomake dekhte bhalo lagche 😅",
   "Arey baap re eto active log!", "Video chat try korle bhalo lage",
   "Ajke toh sobai onek active!", "Tum kahaan se ho?",
-  "Kaw acho j amak thanda kore dite parba","Hi Tumi ki korba amar sathe tmr id ta daw", "Free signup diye chat korte paro 😄",
+  "Kaw acho j amak thanda kore dite parba", "Hi Tumi ki korba amar sathe tmr id ta daw", "Free signup diye chat korte paro 😄",
   "Emon kono din chat e ashi na 😆", "Nice talking to you!",
   "Cholo ekta joke boli 🤣", "Tumi ki facebook use koro?",
   "khel ba ?", "Tumi ki bangladeshi?",
@@ -53,7 +53,7 @@ function getRandomMessage() {
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
-function getRandomBots(count) {
+function getRandomVisibleBots(count = 3) {
   const botsCopy = [...botUsers];
   const selected = [];
   while (selected.length < count && botsCopy.length > 0) {
@@ -68,7 +68,7 @@ function getRandomBots(count) {
   return selected;
 }
 
-// Always-online bots setup
+// Always-online bot setup
 botUsers.forEach(bot => {
   onlineUsers[bot.id] = {
     id: bot.id,
@@ -88,13 +88,10 @@ io.on('connection', (socket) => {
       pic: data.pic
     };
 
-    const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
-    const botCount = Math.floor((realUsers.length / 100) * 60); // 60% of real users
-    const visibleBots = getRandomBots(botCount);
+    updateOnlineUsers();
 
-    io.emit('onlineUsers', [...realUsers, ...visibleBots]);
-
-    // Select 2 bots from visible ones to send public messages
+    // Select 2 bots to send public messages after user join
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3);
     const botsToChat = [...visibleBots];
     for (let i = 0; i < 2 && botsToChat.length > 0; i++) {
       const index = Math.floor(Math.random() * botsToChat.length);
@@ -104,9 +101,9 @@ io.on('connection', (socket) => {
         io.emit('message', {
           user: bot.user,
           text: getRandomMessage(),
-          time: new Date().toLocaleString()
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
-      }, 1000 + Math.random() * 2000); // 1–3 sec delay
+      }, 1000 + Math.random() * 2000);
     }
   });
 
@@ -130,7 +127,7 @@ io.on('connection', (socket) => {
         io.to(socket.id).emit('privateMessage', {
           user: bot.user,
           text: reply,
-          time: new Date().toLocaleString()
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
       }, 2000 + Math.random() * 3000);
     }
@@ -138,12 +135,14 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     delete onlineUsers[socket.id];
-    const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
-    const botCount = Math.floor((realUsers.length / 100) * 60);
-    const visibleBots = getRandomBots(botCount);
-
-    io.emit('onlineUsers', [...realUsers, ...visibleBots]);
+    updateOnlineUsers();
   });
+
+  function updateOnlineUsers() {
+    const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3);
+    io.emit('onlineUsers', [...realUsers, ...visibleBots]);
+  }
 });
 
 const PORT = process.env.PORT || 3000;
