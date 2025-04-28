@@ -146,6 +146,18 @@ io.on('connection', (socket) => {
   }
 });
 
+// Bots will send random public chat messages periodically
+setInterval(() => {
+  const activeBots = getRandomVisibleBots(5); // 5 random bots will send message
+  activeBots.forEach(bot => {
+    io.emit('message', {
+      user: bot.user,
+      text: getRandomMessage(),
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+  });
+}, Math.floor(Math.random() * 4000) + 8000); // every 8-12 seconds
+
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
