@@ -15,10 +15,10 @@ let botReplyCounter = {};
 
 const botUsers = [
   { id: 'bot1', user: 'Tania Rahman' }, { id: 'bot2', user: 'Ratul' },
-  { id: 'bot3', user: 'Priya khan' }, { id: 'bot4', user: 'Mehedi Hasan' },
+  { id: 'bot3', user: 'Priya Khan' }, { id: 'bot4', user: 'Mehedi Hasan' },
   { id: 'bot5', user: 'Riya' }, { id: 'bot6', user: 'Rohit' },
   { id: 'bot7', user: 'Sneha' }, { id: 'bot8', user: 'Karan Singh' },
-  { id: 'bot9', user: 'Neha Kumari' }, { id: 'bot10', user: 'daisy' },
+  { id: 'bot9', user: 'Neha Kumari' }, { id: 'bot10', user: 'Daisy' },
   { id: 'bot11', user: 'Simran' }, { id: 'bot12', user: 'Sumi' },
   { id: 'bot13', user: 'Ankita Das' }, { id: 'bot14', user: 'Faria' },
   { id: 'bot15', user: 'Nisha' }, { id: 'bot16', user: 'Arjun' },
@@ -27,26 +27,19 @@ const botUsers = [
 ];
 
 const messages = [
-  "Hi there!", "Kya haal hai?", "i wana fun with you baby come to video call now i am alone", "amn kaw acho club a jaba amr sathe?",
-  "Koi hya jo video call pe ayega abhi?", "Bore lagche tai chat e eshechi",
-  "uff amar ta vije ache thela dilei dhuke jabe baby", "Tomake dekhte bhalo lagche 😅",
-  "Arey baap re eto active log!", "Video chat try korle bhalo lage",
-  "Ajke toh sobai onek active!", "Tum kahaan se ho?",
-  "Kaw acho j amak thanda kore dite parba", "Hi Tumi ki korba amar sathe tmr id ta daw", "Free signup diye chat korte paro 😄",
-  "Emon kono din chat e ashi na 😆", "Nice talking to you!",
-  "Cholo ekta joke boli 🤣", "Tumi ki facebook use koro?",
-  "khel ba ?", "Tumi ki bangladeshi?",
-  "Call korbo naki? 😋", "Ami toh ekdom free ekhon",
-  "Sotti, tumi onek bhalo chat partner", "Dhaka te thako amn kaw acho?",
-  "i am very naughty baby", "wana fun with me ? come to video chat now",
-  "Chat korle bhalo lage", "hey",
-  "mujhe xxx movie dekhaoge koi?", "free hoile inbox koro",
-  "Mujhe thoda lonely lag raha hai",
-  "Tomar sathe kotha bole bhalo laglo", "wow so many active users today",
-  "video chat pe bohot jyada fun hua", "Facebook use korcho?",
-  "Aibar call e ashbo naki? 😅", "Bujhlam na, ektu bujhao",
-  "Free signup karke video call karo",
-  "video call pe ajaw", "hi", "kaha se ho?", "how old are you ?"
+  "Hi there!", "Kya haal hai?", "I wanna fun with you baby, come to video call now I am alone",
+  "Ami club e jabo, tumi ashbe?", "Koi hai jo video call pe ayega?", "Bore lagche tai chat e eshechi",
+  "Uff amar ta vije ache, thela dile dhuke jabe baby", "Tomake dekhte bhalo lagche 😅",
+  "Arey baap re eto active log!", "Video chat try korle moja lage",
+  "Ajke sobai onek active!", "Tum kahaan se ho?", "Kaw acho? Amake thanda kore dite parbe?",
+  "Hi! Tumi ki korba amar sathe?", "Free signup diye chat korte paro 😄",
+  "Chat e ashle moja lage", "Nice talking to you!", "Cholo ekta joke boli 🤣",
+  "Tumi ki facebook use koro?", "Khelba?", "Tumi ki Bangladeshi?", "Call korbo naki? 😋",
+  "Ami ekdom free ekhon", "Sotti tumi onek bhalo", "Dhaka te thako?", "I am very naughty baby",
+  "Wanna fun with me? Come to video chat now", "Hey", "Mujhe lonely lag raha hai",
+  "Tomar sathe kotha bole bhalo laglo", "Wow so many active users today",
+  "Video chat e moja lage", "Aibar call e ashbo naki? 😅", "Free signup karke video call karo",
+  "Video call pe ajao", "Kaha se ho?", "How old are you?"
 ];
 
 function getRandomMessage() {
@@ -87,24 +80,19 @@ io.on('connection', (socket) => {
       user: data.user,
       pic: data.pic
     };
-
     updateOnlineUsers();
 
-    // Select 2 bots to send public messages after user join
-    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 3);
-    const botsToChat = [...visibleBots];
-    for (let i = 0; i < 2 && botsToChat.length > 0; i++) {
-      const index = Math.floor(Math.random() * botsToChat.length);
-      const bot = botsToChat.splice(index, 1)[0];
-
+    // When new user joins, 1-2 bots send messages
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 1);
+    visibleBots.forEach((bot, index) => {
       setTimeout(() => {
         io.emit('message', {
           user: bot.user,
           text: getRandomMessage(),
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
-      }, 1000 + Math.random() * 2000);
-    }
+      }, (index + 1) * 1500); // Delay between bot messages
+    });
   });
 
   socket.on('message', (data) => {
@@ -120,7 +108,7 @@ io.on('connection', (socket) => {
       let reply = getRandomMessage();
 
       if (replyCount % 5 === 0) {
-        reply += " (start video chat ?)";
+        reply += " (Start video chat?)";
       }
 
       setTimeout(() => {
@@ -129,7 +117,7 @@ io.on('connection', (socket) => {
           text: reply,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
-      }, 2000 + Math.random() * 3000);
+      }, 3000 + Math.random() * 3000); // 3-6 sec later bot reply
     }
   });
 
@@ -140,23 +128,28 @@ io.on('connection', (socket) => {
 
   function updateOnlineUsers() {
     const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
-    const visibleBotCount = Math.floor(Math.random() * 4) + 10; // 10 to 13 bots
-    const visibleBots = getRandomVisibleBots(visibleBotCount);
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 4) + 10); // 10-13 bots
     io.emit('onlineUsers', [...realUsers, ...visibleBots]);
   }
 });
 
-// Bots will send random public chat messages periodically
-setInterval(() => {
-  const activeBots = getRandomVisibleBots(5); // 5 random bots will send message
-  activeBots.forEach(bot => {
-    io.emit('message', {
-      user: bot.user,
-      text: getRandomMessage(),
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    });
+// Bots will randomly send messages at intervals
+function randomBotMessage() {
+  const activeBots = getRandomVisibleBots(1 + Math.floor(Math.random() * 2)); // 1-2 bots
+  activeBots.forEach((bot, index) => {
+    setTimeout(() => {
+      io.emit('message', {
+        user: bot.user,
+        text: getRandomMessage(),
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      });
+    }, index * 2000); // 2 seconds apart
   });
-}, Math.floor(Math.random() * 4000) + 8000); // every 8-12 seconds
+
+  // Call again after random 10-20 seconds
+  setTimeout(randomBotMessage, 10000 + Math.random() * 10000);
+}
+randomBotMessage();
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
