@@ -33,7 +33,7 @@ const messages = [
   "Arey baap re eto active log!", "Video chat try korle moja lage",
   "Ajke sobai onek active!", "Tum kahaan se ho?", "Kaw acho? Amake thanda kore dite parbe?",
   "Hi! Tumi ki korba amar sathe?", "Free signup diye chat korte paro 😄",
-  "Chat e ashle moja lage", "Nice talking to you!", "Cholo ekta joke boli 🤣",
+  "Chat e ashle moja lage", "Nice talking to you!", "wana see something? video chat join karo aabhi",
   "Tumi ki facebook use koro?", "Khelba?", "Tumi ki Bangladeshi?", "Call korbo naki? 😋",
   "Ami ekdom free ekhon", "Sotti tumi onek bhalo", "Dhaka te thako?", "I am very naughty baby",
   "Wanna fun with me? Come to video chat now", "Hey", "Mujhe lonely lag raha hai",
