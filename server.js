@@ -82,7 +82,17 @@ io.on('connection', (socket) => {
     };
     updateOnlineUsers();
 
-    // Bots won't send welcome messages in public chat anymore
+    // When new user joins, 2-3 bots send messages
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 2); // 2-3 bots
+    visibleBots.forEach((bot, index) => {
+      setTimeout(() => {
+        io.emit('message', {
+          user: bot.user,
+          text: getRandomMessage(),
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+      }, (index + 1) * 1500); // Delay between bot messages
+    });
   });
 
   socket.on('message', (data) => {
@@ -107,7 +117,7 @@ io.on('connection', (socket) => {
           text: reply,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
-      }, 3000 + Math.random() * 3000);
+      }, 3000 + Math.random() * 3000); // 3-6 sec later bot reply
     }
   });
 
@@ -118,13 +128,12 @@ io.on('connection', (socket) => {
 
   function updateOnlineUsers() {
     const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
-    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 4) + 10); // 10–13 bots
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 4) + 10); // 10-13 bots
     io.emit('onlineUsers', [...realUsers, ...visibleBots]);
   }
 });
 
-// Disabled random bot public message system
-// (function randomBotMessage() { })(); <-- Removed this function
+// Removed randomBotMessage function to prevent bots from sending messages at intervals
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
