@@ -82,17 +82,7 @@ io.on('connection', (socket) => {
     };
     updateOnlineUsers();
 
-    // When new user joins, 1-2 bots send messages
-    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 2) + 1);
-    visibleBots.forEach((bot, index) => {
-      setTimeout(() => {
-        io.emit('message', {
-          user: bot.user,
-          text: getRandomMessage(),
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        });
-      }, (index + 1) * 1500); // Delay between bot messages
-    });
+    // Bots won't send welcome messages in public chat anymore
   });
 
   socket.on('message', (data) => {
@@ -117,7 +107,7 @@ io.on('connection', (socket) => {
           text: reply,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         });
-      }, 3000 + Math.random() * 3000); // 3-6 sec later bot reply
+      }, 3000 + Math.random() * 3000);
     }
   });
 
@@ -128,28 +118,13 @@ io.on('connection', (socket) => {
 
   function updateOnlineUsers() {
     const realUsers = Object.values(onlineUsers).filter(u => !u.id.startsWith('bot'));
-    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 4) + 10); // 10-13 bots
+    const visibleBots = getRandomVisibleBots(Math.floor(Math.random() * 4) + 10); // 10–13 bots
     io.emit('onlineUsers', [...realUsers, ...visibleBots]);
   }
 });
 
-// Bots will randomly send messages at intervals
-function randomBotMessage() {
-  const activeBots = getRandomVisibleBots(1 + Math.floor(Math.random() * 2)); // 1-2 bots
-  activeBots.forEach((bot, index) => {
-    setTimeout(() => {
-      io.emit('message', {
-        user: bot.user,
-        text: getRandomMessage(),
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      });
-    }, index * 2000); // 2 seconds apart
-  });
-
-  // Call again after random 10-20 seconds
-  setTimeout(randomBotMessage, 10000 + Math.random() * 10000);
-}
-randomBotMessage();
+// Disabled random bot public message system
+// (function randomBotMessage() { })(); <-- Removed this function
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
