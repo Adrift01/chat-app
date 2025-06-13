@@ -32,13 +32,13 @@ const messages = [
   "Uff amar ta vije ache, thela dile dhuke jabe baby", "Aapna number do phir 😅",
   "Arey baap re eto active log", "Video chat korle moja lage",
   "ntelegram id bata do", "Tum kahaan se ho?", "Kaw acho? Amake thanda kore dite parbe?",
-  "Hi! Tumi ki korba amar sathe?", "Free signup diye chat korte paro 😄",
+  "Hi! Tumi ki korba amar sathe?", "App download diye chat korte paro 😄",
   "Chat e ashle moja lage", "Nice talking to you!", "wana see something? video chat join karo aabhi",
   "Tumi ki facebook use koro?", "Khelba?", "Tumi ki Bangladeshi?", "Call korbo naki? 😋",
   "Ami ekdom free ekhon", "telegram id bata do aap", "Dhaka te thako?", "I am very naughty baby",
   "Wanna fun with me? Come to video chat now", "Hey", "Mujhe lonely lag raha hai",
   "Tomar sathe kotha bole bhalo laglo", "thik hai ajaao",
-  "Video chat e moja lage", "Aibar call e ashbo naki? 😅", "Free signup karke video call karo",
+  "Video chat e moja lage", "Aibar call e ashbo naki? 😅", "Video chat app download karke video call karo",
   "Video call pe ajao", "Kaha se ho?", "How old are you?"
 ];
 
