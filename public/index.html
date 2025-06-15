@@ -597,22 +597,13 @@
   Join group
 </button>
 
-  <button id="girlsListBtn"
-  style="background: linear-gradient(135deg, #ff0080, #7928ca); color: white; font-weight: bold; padding: 12px 20px; font-size: 1rem; border: none; border-radius: 10px; box-shadow: 0 0 10px rgba(255, 105, 180, 0.6); cursor: pointer;">
-  💃 Free Girls List
-</button>
+<div id="customAdContainer" style="position: fixed; bottom: 20px; right: 20px; width: 300px; height: 250px; background: #ffffff; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.3); overflow: hidden; z-index: 9999;">
+</div>
 
 <script>
-  document.getElementById('girlsListBtn').addEventListener('click', function () {
-    // Show the ad first
-    ads.ad_show({
-      adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
-      onClose: () => {
-        // Ad দেখা শেষ হলে এখানে যা করতে চাও করো, উদাহরণ:
-        alert("Redirecting to the list...");
-        window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
-      }
-    });
+  ads.ad_show({
+    adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
+    container: "customAdContainer"
   });
 </script>
 
