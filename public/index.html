@@ -593,23 +593,29 @@
       
 <div id="videoCollection">
   <h4>Telegram group</h4>
-      <button onclick="showGroupAd()">Join group</button>
+      <button onclick="alert('Wait for approval'); window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');">
+  Join group
+</button>
+
+  <button id="girlsListBtn"
+  style="background: linear-gradient(135deg, #ff0080, #7928ca); color: white; font-weight: bold; padding: 12px 20px; font-size: 1rem; border: none; border-radius: 10px; box-shadow: 0 0 10px rgba(255, 105, 180, 0.6); cursor: pointer;">
+  💃 Free Girls List
+</button>
 
 <script>
-  function showGroupAd() {
-    if (typeof ads !== 'undefined' && typeof ads.ad_show === 'function') {
-      ads.ad_show({
-        adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
-        onClose: () => {
-          window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
-        }
-      });
-    } else {
-      alert("Wait for approval");
-      window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
-    }
-  }
+  document.getElementById('girlsListBtn').addEventListener('click', function () {
+    // Show the ad first
+    ads.ad_show({
+      adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
+      onClose: () => {
+        // Ad দেখা শেষ হলে এখানে যা করতে চাও করো, উদাহরণ:
+        alert("Redirecting to the list...");
+        window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
+      }
+    });
+  });
 </script>
+
 
 </div>
       
