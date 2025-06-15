@@ -583,15 +583,7 @@
     
     <div id="rightSidebar">
       <div id="telega-ad-container"></div>
-    <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
-<script>
-  const ads = window.TelegaIn.AdsController.create_miniapp({
-    token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
-    ads.ad_show({
-    adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
-    container: "telega-ad-container"
-  });
-</script>
+   
       
   
       <div class="sidebarScrollingNote">
@@ -601,7 +593,24 @@
       
 <div id="videoCollection">
   <h4>Telegram group</h4>
-       <button onclick="showAdThenJoin()">Join group</button>
+      <button onclick="showGroupAd()">Join group</button>
+
+<script>
+  function showGroupAd() {
+    if (typeof ads !== 'undefined' && typeof ads.ad_show === 'function') {
+      ads.ad_show({
+        adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
+        onClose: () => {
+          window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
+        }
+      });
+    } else {
+      alert("Wait for approval");
+      window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
+    }
+  }
+</script>
+
 </div>
       
       <div id="telega-ad-container"></div>
@@ -648,9 +657,6 @@
       } else {
         completeLogin();
       }
-      ads.ad_show({
-  adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
-});
     } 
 
 
@@ -771,22 +777,7 @@
     button.style.boxShadow = "0 0 10px rgba(255, 105, 180, 0.5)";
   };
 </script>
-    <script>
-  function showAdThenJoin() {
-    if (typeof ads !== 'undefined' && typeof ads.ad_show === 'function') {
-      ads.ad_show({
-        adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
-        onClose: () => {
-          window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
-        }
-      });
-    } else {
-      // fallback যদি ad লোড না হয়
-      alert("Wait for approval");
-      window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
-    }
-  }
-</script>
+   
   
 </body>
 </html> 
