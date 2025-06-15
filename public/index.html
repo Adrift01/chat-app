@@ -630,36 +630,31 @@
       return now.toLocaleString();
     }
 
-    function startChat() {
-  const nameInput = document.getElementById('username');
-  const picInput = document.getElementById('picInput');
+   function startChat() {
+      const nameInput = document.getElementById('username');
+      const picInput = document.getElementById('picInput');
 
-  if (!nameInput.value) {
-    alert("Please enter your name.");
-    return;
-  }
+      if (!nameInput.value) {
+        alert("Please enter your name.");
+        return;
+      }
 
-  username = nameInput.value;
-  const file = picInput.files[0];
-
-  // Show ad before proceeding
-  if (typeof ads !== 'undefined' && typeof ads.ad_show === 'function') {
-    ads.ad_show({
-      adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
-    });
-  }
-
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      profilePic = e.target.result;
-      completeLogin();
-    };
-    reader.readAsDataURL(file);
-  } else {
-    completeLogin();
-  }
-}
+      username = nameInput.value;
+      const file = picInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profilePic = e.target.result;
+          completeLogin();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        completeLogin();
+      }
+      ads.ad_show({
+  adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
+});
+    } 
 
 
     function completeLogin() {
