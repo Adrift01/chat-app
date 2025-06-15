@@ -488,6 +488,12 @@
 </style>
 </head>
 <body>
+    <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
+<script>
+  const ads = window.TelegaIn.AdsController.create_miniapp({
+    token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
+</script>
+  
   <div id="header">
     <h2>Free Random Video chat 💬</h2>
   </div>
@@ -625,30 +631,36 @@
     }
 
     function startChat() {
-      const nameInput = document.getElementById('username');
-      const picInput = document.getElementById('picInput');
+  const nameInput = document.getElementById('username');
+  const picInput = document.getElementById('picInput');
 
-      if (!nameInput.value) {
-        alert("Please enter your name.");
-        return;
-      }
+  if (!nameInput.value) {
+    alert("Please enter your name.");
+    return;
+  }
 
-      username = nameInput.value;
-      const file = picInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          profilePic = e.target.result;
-          completeLogin();
-        };
-        reader.readAsDataURL(file);
-      } else {
-        completeLogin();
-      }
-      ads.ad_show({
-  adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
-});
-    }
+  username = nameInput.value;
+  const file = picInput.files[0];
+
+  // Show ad before proceeding
+  if (typeof ads !== 'undefined' && typeof ads.ad_show === 'function') {
+    ads.ad_show({
+      adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
+    });
+  }
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      profilePic = e.target.result;
+      completeLogin();
+    };
+    reader.readAsDataURL(file);
+  } else {
+    completeLogin();
+  }
+}
+
 
     function completeLogin() {
       document.getElementById('login').style.display = 'none';
@@ -766,10 +778,6 @@
     button.style.transform = "scale(1)";
     button.style.boxShadow = "0 0 10px rgba(255, 105, 180, 0.5)";
   };
-    <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
-<script>
-  const ads = window.TelegaIn.AdsController.create_miniapp({
-    token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
-</script>
+  
 </body>
 </html> 
