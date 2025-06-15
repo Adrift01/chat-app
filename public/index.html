@@ -601,9 +601,25 @@
       
 <div id="videoCollection">
   <h4>Telegram group</h4>
-        <button onclick="alert('Wait for approval'); window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');">
-  Join group
-</button>
+       <button onclick="showAdThenJoin()">Join group</button>
+
+<script>
+  function showAdThenJoin() {
+    if (typeof ads !== 'undefined' && typeof ads.ad_show === 'function') {
+      ads.ad_show({
+        adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
+        onClose: () => {
+          window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
+        }
+      });
+    } else {
+      // fallback যদি ad লোড না হয়
+      alert("Wait for approval");
+      window.open('https://t.me/+UZnFeFkZgGQ4OGE1', '_blank');
+    }
+  }
+</script>
+
 
 </div>
       
