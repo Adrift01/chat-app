@@ -488,10 +488,15 @@
 </style>
 </head>
 <body>
-    <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
+  <script src="https://inapp.telega.io/sdk/v1/sdk.js"></script>
 <script>
   const ads = window.TelegaIn.AdsController.create_miniapp({
-    token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680' });
+    token: 'fbabd7eb-2f65-48ad-bd02-1559b79c4680'
+  });
+
+  ads.ad_show({
+    adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf"
+  });
 </script>
   
   <div id="header">
@@ -597,20 +602,10 @@
   Join group
 </button>
 
-<div id="customAdContainer" style="position: fixed; bottom: 20px; right: 20px; width: 300px; height: 250px; background: #ffffff; border-radius: 12px; box-shadow: 0 0 15px rgba(0,0,0,0.3); overflow: hidden; z-index: 9999;">
-</div>
-
-<script>
-  ads.ad_show({
-    adBlockUuid: "fd428a69-b405-4ec8-ab37-b19b956684cf",
-    container: "customAdContainer"
-  });
-</script>
-
-
 </div>
       
       <div id="telega-ad-container"></div>
+      
     </div>
   </div>
 
